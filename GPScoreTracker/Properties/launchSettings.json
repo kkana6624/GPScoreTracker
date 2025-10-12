@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GPScoreTracker (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "GPScoreTracker (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
