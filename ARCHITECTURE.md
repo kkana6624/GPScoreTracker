@@ -12,9 +12,11 @@
 
 #### 1.1.1. 目的
 
-本ドキュメントは、DanceDanceRevolution (DDR) のスコアを管理するデスクトップアプリケーションの開発における、ドメイン駆動設計（DDD）に基づいた設計仕様を定義することを目的とする。
+本ドキュメントは、DanceDanceRevolution (DDR) のスコアを管理するデスクトップアプリケーションの開発における、  
+ドメイン駆動設計（DDD）に基づいた設計仕様を定義することを目的とする。
 
-このアプリケーションは、プレイヤーが自身のスコアを記録・追跡し、成長を可視化することを支援する。本ドキュメントは、開発チームが共通の理解を持ち、一貫性のある高品質なソフトウェアを構築するための礎となる。
+このアプリケーションは、プレイヤーが自身のスコアを記録・追跡し、成長を可視化することを支援する。  
+本ドキュメントは、開発チームが共通の理解を持ち、一貫性のある高品質なソフトウェアを構築するための礎となる。
 
 #### 1.1.2. 設計アプローチ
 
@@ -46,7 +48,7 @@
 
 ```mermaid
 graph TD
-    subgraph WinUI クライアント
+    subgraph "WinUI クライアント"
         A[1.ホットキーで画像キャプチャ] --> B[WinUI App]
     end
 
@@ -291,7 +293,7 @@ DDRに収録されている楽曲を表す。
 ### 4.2. シーケンス図
 
 #### 4.2.1. 画面キャプチャと非同期解析フロー
-(ユースケース 4.1.2, 4.1.3 に対応)
+ユースケース 4.1.2, 4.1.3 に対応
 
 ```mermaid
 sequenceDiagram
@@ -581,3 +583,145 @@ GPScoreTracker.sln
 | `COM_NET_001` | `HttpRequestException` | ネットワークに接続できません。 | インターネット接続がない、またはDNSの問題。 | UIでオフライン状態であることを通知し、リトライを促す。 |
 | `COM_API_404` | HTTP 404 Not Found | APIエンドポイントが見つかりません。 | クライアントが不正なAPIパスにリクエストした。 | 開発時のバグ。UIで汎用エラーを表示し、ログ記録。 |
 | `COM_API_500`| HTTP 500 Internal Server Error | サーバーで予期せぬエラーが発生しました。 | サーバー側でキャッチされなかった例外が発生した。| UIで汎用エラーを表示し、時間をおいて試すよう促す。|
+
+## 8. 横断的関心事 (Cross-Cutting Concerns)
+
+本セクションでは、特定のレイヤーに限定されず、アプリケーション全体に横断的に関わる設計上の決定事項を定義する。
+
+### 8.1. ロギング戦略
+
+ログは、開発時のデバッグと、リリース後の問題解決に不可欠な情報を提供する。本アプリケーションでは、クライアントとサーバーで以下の戦略を採用する。
+
+#### 8.1.1. ライブラリとフォーマットの選定
+
+* **ロギングライブラリ:** **Serilog** を採用する。
+    * 理由: モダンな.NETアプリケーションにおける構造化ロギングのデファクトスタンダードであり、DIコンテナとの親和性や、豊富な出力先（Sink）、カスタム情報（Enricher）の仕組みが本プロジェクトのアーキテクチャに最適であるため。
+
+* **ログフォーマット:** **JSON (JSON Lines)** 形式を標準とする。
+    * 理由: ログを機械判読可能なデータとして扱うことで、OCI Loggingなどのツールでの高度な検索、フィルタリング、集計を可能にするため。
+
+#### 8.1.2. 標準ログフォーマット定義
+
+全てのログエントリには、以下の情報を含めることを標準とする。
+
+| フィールド名 | 説明 |
+|:---|:---|
+| `Timestamp` | ログの発生日時 (ISO 8601形式) |
+| `Level` | ログレベル (`Information`, `Warning`, `Error`など) |
+| `Message` | 人間が読むためのメッセージテンプレート |
+| `Properties` | 構造化されたログデータ（キーと値のペア） |
+| `SourceContext`| ログが出力されたクラス名 |
+| `Application` | `Client`か`Server`かを識別する文字列 |
+| `CorrelationId`| クライアントからサーバーまでの一連の処理を追跡するためのID |
+| `UserProfileId`| 操作を行っているユーザープロファイルのID |
+| `Exception` | エラー発生時の例外情報（スタックトレースなど） |
+
+#### 8.1.3. ログフォーマットのサンプル
+
+**【例1：クライアントでキャプチャが成功した時のログ】**
+
+```json
+{
+  "Timestamp": "2025-10-13T16:35:10.555+09:00",
+  "Level": "Information",
+  "MessageTemplate": "New capture queued for analysis. FilePath: {FilePath}",
+  "Properties": {
+    "FilePath": "C:\\...\\temp\\capture-xyz.png",
+    "SourceContext": "GPScoreTracker.Client.Application.CaptureApplicationService",
+    "Application": "Client",
+    "CorrelationId": "d8e8f8f0-e8b8-4f8a-8a3a-3c5e3d7a1b3b",
+    "UserProfileId": "a1b2c3d4-e5f6-..."
+  }
+}
+```
+
+**【例2：サーバーでGemini APIの解析に失敗した時のログ】**
+
+```json
+{
+  "Timestamp": "2025-10-13T16:35:15.123+09:00",
+  "Level": "Error",
+  "MessageTemplate": "Failed to analyze image with Gemini API for CaptureId: {CaptureId}",
+  "Properties": {
+    "CaptureId": "capture-xyz",
+    "SourceContext": "GPScoreTracker.Server.Functions.Infrastructure.Ocr.GeminiScoreOcrService",
+    "Application": "Server",
+    "CorrelationId": "d8e8f8f0-e8b8-4f8a-8a3a-3c5e3d7a1b3b",
+    "UserProfileId": "a1b2c3d4-e5f6-..."
+  },
+  "Exception": "System.Net.Http.HttpRequestException: Response status code does not indicate success: 500 (Internal Server Error). ..."
+}
+```
+
+#### 8.1.4. 実装時のTipsとコードスニペット
+
+**Tip 1: Serilogの基本設定（構造化ロギング）**
+
+アプリケーションの起動時に、DIコンテナに対してSerilogを設定します。WriteTo.FileでJSONフォーマットを指定し、Enrich機能で共通プロパティを自動的に付与します。
+
+```csharp
+// Program.cs や App.xaml.cs での設定例
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext() // Tip 4 で使用
+    .Enrich.WithProperty("Application", "Client") // このアプリケーションがクライアントであることを示す
+    .WriteTo.File(
+        new Serilog.Formatting.Json.JsonFormatter(), // JSON形式で出力
+        path: @"C:\Users\[User]\AppData\Local\GPScoreTracker\logs\log-.txt",
+        rollingInterval: RollingInterval.Day, // 1日ごとにファイルをローテーション
+        retainedFileCountLimit: 30, // 30日間ログを保持
+        rollOnFileSizeLimit: true,
+        fileSizeLimitBytes: 10 * 1024 * 1024 // 10MBでファイルを分割
+    )
+    .CreateLogger();
+```
+
+**Tip 2: 構造化ログの正しい書き方**
+
+文字列補間 ($"{variable}") を使うのではなく、メッセージテンプレート ("{VariableName}") を使ってログを記録します。これにより、Serilogがプロパティを正しく構造化データとして保存します。
+
+```csharp
+// 悪い例 ❌
+_logger.LogInformation($"User {userId} logged in.");
+
+// 良い例 ✅
+_logger.LogInformation("User {UserId} logged in.", userId);
+```
+
+**Tip 3: CorrelationIdの伝播**
+
+クライアントは、バックエンドAPIを呼び出す際、生成したCorrelationIdをカスタムHTTPヘッダー（例: X-Correlation-ID）に含めて送信します。
+サーバーサイド（OCI Functions）は、リクエストを受け取ったら、このヘッダーからCorrelationIdを読み取り、自身のログコンテキストに追加します。これにより、クライアントとサーバーのログが同じIDで紐付きます。
+
+
+**Tip 4: LogContextで一時的なコンテキスト情報を追加する**
+
+usingステートメントとLogContext.PushPropertyを使うことで、特定の処理ブロック内でのみログに情報を付与できます。これはUserProfileIdなどを付与するのに非常に便利です。
+
+```csharp
+public void SomeMethod(Guid userProfileId)
+{
+    // このusingブロック内の全てのログに、自動的にUserProfileIdが付与される
+    using (Serilog.Context.LogContext.PushProperty("UserProfileId", userProfileId))
+    {
+        _logger.LogInformation("Processing started.");
+        // ... 処理 ...
+        _logger.LogInformation("Processing finished.");
+    }
+}
+```
+
+#### 8.1.5. クライアント/サーバー固有の戦略
+
+アプリケーションの実行環境に応じて、以下の固有の戦略を適用する。
+
+##### クライアント (WinUI)
+
+* **出力先:** ユーザープロファイル内のローカルファイル（例: `%LOCALAPPDATA%\GPScoreTracker\logs\`）。
+* **ログローテーション:** 日次ローテーションを基本とし、ファイルサイズ上限（例: 10MB）も設ける。
+* **ログ保持ポリシー:** 30日間を超えた古いログファイルは、アプリケーション起動時などに自動的に削除する。
+* **アーカイブ:** ローテーション時に、前日分のログファイルを自動的に`.zip`形式に圧縮してディスク使用量を削減する。
+
+##### サーバー (OCI Functions)
+
+* **出力先:** **OCI Logging** サービス。アプリケーションコード内でのファイル操作は不要。
+* **ログ保持とアーカイブ:** **OCIの管理コンソール上**で設定する。ログ・グループに対して保持期間（例: 30日）を設定し、期間を過ぎたログはOCIによって自動的に削除される。長期アーカイブが必要な場合は、OCI Object Storageへログを自動的にエクスポートするルールを作成する。
