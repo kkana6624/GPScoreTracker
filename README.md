@@ -1,133 +1,121 @@
-# GPScoreTracker - DDR Score Management Application
+ï»¿# GPScoreTracker - DDR Score Management Application
 
-DDR (DanceDanceRevolution) ‚ÌƒXƒRƒA‚ğŠÇ—‚·‚éƒfƒXƒNƒgƒbƒvƒAƒvƒŠƒP[ƒVƒ‡ƒ“
+DDR (DanceDanceRevolution) ã®ã‚¹ã‚³ã‚¢ã‚’ç®¡ç†ã™ã‚‹ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³
 
-## ?? ƒvƒƒWƒFƒNƒgŠT—v
+## ğŸ“‹ ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆæ¦‚è¦
 
-‚±‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÍADDRƒvƒŒƒCƒ„[‚ª©g‚ÌƒXƒRƒA‚ğ‹L˜^E’ÇÕ‚µA¬’·‚ğ‰Â‹‰»‚·‚é‚±‚Æ‚ğx‰‡‚µ‚Ü‚·B
+ã“ã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€DDRãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè‡ªèº«ã®ã‚¹ã‚³ã‚¢ã‚’è¨˜éŒ²ãƒ»è¿½è·¡ã—ã€æˆé•·ã‚’å¯è¦–åŒ–ã™ã‚‹ã“ã¨ã‚’æ”¯æ´ã—ã¾ã™ã€‚
 
-### å‚È‹@”\
+### ä¸»ãªæ©Ÿèƒ½
 
-- ƒzƒbƒgƒL[‚É‚æ‚é‰æ–ÊƒLƒƒƒvƒ`ƒƒ
-- AIiGemini APIj‚É‚æ‚é©“®ƒXƒRƒA‰ğÍ
-- ƒXƒRƒA—š—ğ‚ÌŠÇ—
-- ©ŒÈƒxƒXƒgEƒgƒbƒvƒXƒRƒA‚Ì’ÇÕ
-- ƒf[ƒ^‚ÌƒGƒNƒXƒ|[ƒgiCSVj
+- ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã«ã‚ˆã‚‹ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£
+- AIï¼ˆGemini APIï¼‰ã«ã‚ˆã‚‹è‡ªå‹•ã‚¹ã‚³ã‚¢è§£æ
+- ã‚¹ã‚³ã‚¢å±¥æ­´ã®ç®¡ç†
+- è‡ªå·±ãƒ™ã‚¹ãƒˆãƒ»ãƒˆãƒƒãƒ—ã‚¹ã‚³ã‚¢ã®è¿½è·¡
+- ãƒ‡ãƒ¼ã‚¿ã®ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆï¼ˆCSVï¼‰
 
-## ??? ƒA[ƒLƒeƒNƒ`ƒƒ
+## ğŸ—ï¸ ã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£
 
-- **ƒNƒ‰ƒCƒAƒ“ƒg**: WinUI 3 ƒfƒXƒNƒgƒbƒvƒAƒvƒŠ
-- **ƒT[ƒo[**: Oracle Cloud Infrastructure (OCI) ƒT[ƒo[ƒŒƒX
-- **İŒvè–@**: ƒhƒƒCƒ“‹ì“®İŒviDDDjAƒNƒŠ[ƒ“ƒA[ƒLƒeƒNƒ`ƒƒACQRS
+- **ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆ**: WinUI 3 ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã‚¢ãƒ—ãƒª
+- **ã‚µãƒ¼ãƒãƒ¼**: Oracle Cloud Infrastructure (OCI) ã‚µãƒ¼ãƒãƒ¼ãƒ¬ã‚¹
+- **è¨­è¨ˆæ‰‹æ³•**: ãƒ‰ãƒ¡ã‚¤ãƒ³é§†å‹•è¨­è¨ˆï¼ˆDDDï¼‰ã€ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£ã€CQRS
 
-Ú×‚Í [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) ‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+è©³ç´°ã¯ [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) ã‚’å‚ç…§ã—ã¦ãã ã•ã„ã€‚
 
-## ??? ‹ZpƒXƒ^ƒbƒN
+## ğŸ› ï¸ æŠ€è¡“ã‚¹ã‚¿ãƒƒã‚¯
 
-### ƒNƒ‰ƒCƒAƒ“ƒg
+### ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆ
 - .NET 8
 - WinUI 3
 - C#
 
-### ƒT[ƒo[
-- OCI Functions (ƒT[ƒo[ƒŒƒX)
+### ã‚µãƒ¼ãƒãƒ¼
+- OCI Functions (ã‚µãƒ¼ãƒãƒ¼ãƒ¬ã‚¹)
 - OCI Autonomous Database (Always Free)
 - OCI Object Storage
 - OCI Vault
 
-### ŠO•”ƒT[ƒrƒX
-- Google Gemini APIi‰æ‘œ‰ğÍj
+### å¤–éƒ¨ã‚µãƒ¼ãƒ“ã‚¹
+- Google Gemini APIï¼ˆç”»åƒè§£æï¼‰
 
-## ?? ƒvƒƒWƒFƒNƒg\‘¢
+## ğŸ“‚ ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆæ§‹é€ 
 
 ```
 GPScoreTracker.sln
-„¥„Ÿ„Ÿ docs/       # ƒhƒLƒ…ƒƒ“ƒg
-„    „¤„Ÿ„Ÿ ARCHITECTURE.md
-„¥„Ÿ„Ÿ src-shared/ # ‹¤—LƒhƒƒCƒ“ƒƒWƒbƒN
-„    „¤„Ÿ„Ÿ GPScoreTracker.Domain/
-„¥„Ÿ„Ÿ src-client/                # ƒNƒ‰ƒCƒAƒ“ƒg
-„    „¥„Ÿ„Ÿ GPScoreTracker.WinUi/
-„    „¥„Ÿ„Ÿ GPScoreTracker.Client.Application/
-„    „¤„Ÿ„Ÿ GPScoreTracker.Client.Infrastructure/
-„¥„Ÿ„Ÿ src-server/         # ƒT[ƒo[
-„    „¤„Ÿ„Ÿ GPScoreTracker.Server.Functions/
-„¤„Ÿ„Ÿ tests/               # ƒeƒXƒg
-    „¥„Ÿ„Ÿ GPScoreTracker.Domain.Tests/
-    „¥„Ÿ„Ÿ GPScoreTracker.Client.Application.Tests/
-    „¥„Ÿ„Ÿ GPScoreTracker.Client.Infrastructure.Tests/
-  „¤„Ÿ„Ÿ GPScoreTracker.Server.Functions.Tests/
+â”œâ”€â”€ docs/       # ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ
+â”‚   â””â”€â”€ ARCHITECTURE.md
+â”œâ”€â”€ src-shared/ # å…±æœ‰ãƒ‰ãƒ¡ã‚¤ãƒ³ãƒ­ã‚¸ãƒƒã‚¯
+â”‚   â””â”€â”€ GPScoreTracker.Domain/
+â”œâ”€â”€ src-client/                # ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆ
+â”‚   â”œâ”€â”€ GPScoreTracker.WinUi/
+â”‚   â”œâ”€â”€ GPScoreTracker.Client.Application/
+â”‚   â””â”€â”€ GPScoreTracker.Client.Infrastructure/
+â”œâ”€â”€ src-server/         # ã‚µãƒ¼ãƒãƒ¼
+â”‚   â””â”€â”€ GPScoreTracker.Server.Functions/
+â””â”€â”€ tests/               # ãƒ†ã‚¹ãƒˆ
+    â”œâ”€â”€ GPScoreTracker.Domain.Tests/
+    â”œâ”€â”€ GPScoreTracker.Client.Application.Tests/
+    â”œâ”€â”€ GPScoreTracker.Client.Infrastructure.Tests/
+  â””â”€â”€ GPScoreTracker.Server.Functions.Tests/
 ```
 
-## ?? ƒZƒbƒgƒAƒbƒvè‡
+## ğŸš€ ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—æ‰‹é †
 
-### •K—v‚ÈŠÂ‹«
+### å¿…è¦ãªç’°å¢ƒ
 
 - .NET 8 SDK
-- Visual Studio 2022 (WinUI 3 ƒTƒ|[ƒg)
-- Oracle Cloud Infrastructure ƒAƒJƒEƒ“ƒg
-- Google Gemini API ƒL[
+- Visual Studio 2022 (WinUI 3 ã‚µãƒãƒ¼ãƒˆ)
+- Oracle Cloud Infrastructure ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ
+- Google Gemini API ã‚­ãƒ¼
 
-### ƒNƒ[ƒ“‚Æƒrƒ‹ƒh
+### ã‚¯ãƒ­ãƒ¼ãƒ³ã¨ãƒ“ãƒ«ãƒ‰
 
 ```bash
-# ƒŠƒ|ƒWƒgƒŠ‚ÌƒNƒ[ƒ“
+# ãƒªãƒã‚¸ãƒˆãƒªã®ã‚¯ãƒ­ãƒ¼ãƒ³
 git clone https://github.com/kkana6624/GPScoreTracker.git
 cd GPScoreTracker
 
-# ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚Ìƒrƒ‹ƒh
+# ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ“ãƒ«ãƒ‰
 dotnet build
 
-# ƒeƒXƒg‚ÌÀs
+# ãƒ†ã‚¹ãƒˆã®å®Ÿè¡Œ
 dotnet test
 ```
 
-### OCIŠÂ‹«‚ÌƒZƒbƒgƒAƒbƒv
+### OCIç’°å¢ƒã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
 
-1. OCI Autonomous Database ‚Ìì¬iAlways Free˜gj
-2. OCI Object Storage ƒoƒPƒbƒg‚Ìì¬
-3. OCI Vault ‚ÌƒZƒbƒgƒAƒbƒv
-4. OCI Functions ‚ÌƒfƒvƒƒC
+1. OCI Autonomous Database ã®ä½œæˆï¼ˆAlways Freeæ ï¼‰
+2. OCI Object Storage ãƒã‚±ãƒƒãƒˆã®ä½œæˆ
+3. OCI Vault ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
+4. OCI Functions ã®ãƒ‡ãƒ—ãƒ­ã‚¤
 
-Ú×‚Èè‡‚Í[docs/SETUP.md](docs/SETUP.md)‚ğQÆiì¬—\’èj
+è©³ç´°ãªæ‰‹é †ã¯[docs/SETUP.md](docs/SETUP.md)ã‚’å‚ç…§ï¼ˆä½œæˆäºˆå®šï¼‰
 
-## ?? ƒeƒXƒg
+## ğŸ§ª ãƒ†ã‚¹ãƒˆ
 
 ```bash
-# ‚·‚×‚Ä‚ÌƒeƒXƒg‚ğÀs
+# ã™ã¹ã¦ã®ãƒ†ã‚¹ãƒˆã‚’å®Ÿè¡Œ
 dotnet test
 
-# “Á’è‚ÌƒvƒƒWƒFƒNƒg‚ÌƒeƒXƒg
+# ç‰¹å®šã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ†ã‚¹ãƒˆ
 dotnet test tests/GPScoreTracker.Domain.Tests/
 ```
 
-## ?? ŠJ”­ƒKƒCƒhƒ‰ƒCƒ“
+## ğŸ“ é–‹ç™ºã‚¬ã‚¤ãƒ‰ãƒ©ã‚¤ãƒ³
 
-### ƒR[ƒfƒBƒ“ƒO‹K–ñ
+### ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°è¦ç´„
 
-- ƒeƒXƒg‹ì“®ŠJ”­iTDDj‚ğÌ—p
-- ƒhƒƒCƒ“ƒƒWƒbƒN‚Í•s•ÏiImmutablej‚ğŒ´‘¥‚Æ‚·‚é
-- LINQ ‚ğg—p‚µ‚½éŒ¾“IƒvƒƒOƒ‰ƒ~ƒ“ƒO‚ğ—Dæ
-- \‘¢‰»ƒƒMƒ“ƒOiSerilogj‚ğg—p
+- ãƒ†ã‚¹ãƒˆé§†å‹•é–‹ç™ºï¼ˆTDDï¼‰ã‚’æ¡ç”¨
+- ãƒ‰ãƒ¡ã‚¤ãƒ³ãƒ­ã‚¸ãƒƒã‚¯ã¯ä¸å¤‰ï¼ˆImmutableï¼‰ã‚’åŸå‰‡ã¨ã™ã‚‹
+- LINQ ã‚’ä½¿ç”¨ã—ãŸå®£è¨€çš„ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ã‚’å„ªå…ˆ
+- æ§‹é€ åŒ–ãƒ­ã‚®ãƒ³ã‚°ï¼ˆSerilogï¼‰ã‚’ä½¿ç”¨
 
-Ú×‚Í [docs/ARCHITECTURE.md#6-À‘•ƒKƒCƒhƒ‰ƒCƒ“](docs/ARCHITECTURE.md#6-À‘•ƒKƒCƒhƒ‰ƒCƒ“) ‚ğQÆ
+è©³ç´°ã¯ [docs/ARCHITECTURE.md#6-å®Ÿè£…ã‚¬ã‚¤ãƒ‰ãƒ©ã‚¤ãƒ³](docs/ARCHITECTURE.md#6-å®Ÿè£…ã‚¬ã‚¤ãƒ‰ãƒ©ã‚¤ãƒ³) ã‚’å‚ç…§
 
-## ?? ŠJ”­ƒtƒF[ƒY
+## ğŸ”„ é–‹ç™ºãƒ•ã‚§ãƒ¼ã‚º
 
-- [x] Phase 0: ƒvƒƒWƒFƒNƒg\‘¢‚ÆŠî”Õ®”õ
-- [ ] Phase 1: ƒhƒƒCƒ“‘w‚ÌÀ‘•
-- [ ] Phase 2: ƒCƒ“ƒtƒ‰ƒXƒgƒ‰ƒNƒ`ƒƒŠî”Õ
-- [ ] Phase 3: ƒRƒA‹@”\‚ÌÀ‘•
-- [ ] Phase 4: “‡EÅ“K‰»
-
-## ?? ƒ‰ƒCƒZƒ“ƒX
-
-‚±‚ÌƒvƒƒWƒFƒNƒg‚Í MIT ƒ‰ƒCƒZƒ“ƒX‚Ì‰º‚ÅŒöŠJ‚³‚ê‚Ä‚¢‚Ü‚·B
-
-## ?? vŒ£
-
-vŒ£‚ğŠ½Œ}‚µ‚Ü‚·IIssue ‚â Pull Request ‚ğ‚¨‹CŒy‚É‚Ç‚¤‚¼B
-
-## ?? ‚¨–â‚¢‡‚í‚¹
-
-- GitHub Issues: https://github.com/kkana6624/GPScoreTracker/issues
+- [x] Phase 0: ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆæ§‹é€ ã¨åŸºç›¤æ•´å‚™
+- [ ] Phase 1: ãƒ‰ãƒ¡ã‚¤ãƒ³å±¤ã®å®Ÿè£…
+- [ ] Phase 2: ã‚¤ãƒ³ãƒ•ãƒ©ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£åŸºç›¤
+- [ ] Phase 3: ã‚³ã‚¢æ©Ÿèƒ½ã®å®Ÿè£…
+- [ ] Phase 4: çµ±åˆãƒ»æœ€é©åŒ–
