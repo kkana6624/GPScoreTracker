@@ -1,7 +1,7 @@
 namespace GPScoreTracker.Domain.Enums;
 
 /// <summary>
-/// DDR���ʂ̓�Փx�J�e�S����\���񋓌^
+/// DDR譜面の難易度カテゴリを表す列挙型
 /// </summary>
 public enum Difficulty
 {
