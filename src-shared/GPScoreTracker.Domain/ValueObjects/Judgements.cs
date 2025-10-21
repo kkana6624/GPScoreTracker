@@ -1,55 +1,55 @@
 namespace GPScoreTracker.Domain.ValueObjects;
 
 /// <summary>
-/// ƒvƒŒƒC’†‚Ì”»’è‰ñ”‚ğ•\‚·’lƒIƒuƒWƒFƒNƒg
+/// ãƒ—ãƒ¬ã‚¤ä¸­ã®åˆ¤å®šå›æ•°ã‚’è¡¨ã™å€¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 /// </summary>
 public sealed class Judgements : IEquatable<Judgements>
 {
     /// <summary>
-    /// Marvelous”»’è‚Ì‰ñ”
+    /// Marvelousåˆ¤å®šã®å›æ•°
     /// </summary>
     public int Marvelous { get; }
 
     /// <summary>
-    /// Perfect”»’è‚Ì‰ñ”
+    /// Perfectåˆ¤å®šã®å›æ•°
     /// </summary>
     public int Perfect { get; }
 
     /// <summary>
-    /// Great”»’è‚Ì‰ñ”
+    /// Greatåˆ¤å®šã®å›æ•°
     /// </summary>
     public int Great { get; }
 
     /// <summary>
-    /// Good”»’è‚Ì‰ñ”
+    /// Goodåˆ¤å®šã®å›æ•°
     /// </summary>
     public int Good { get; }
 
     /// <summary>
-    /// Miss”»’è‚Ì‰ñ”
+    /// Missåˆ¤å®šã®å›æ•°
     /// </summary>
     public int Miss { get; }
 
     /// <summary>
-    /// ‘ƒm[ƒg”i‚·‚×‚Ä‚Ì”»’è‚Ì‡Œvj
+    /// ç·ãƒãƒ¼ãƒˆæ•°ï¼ˆã™ã¹ã¦ã®åˆ¤å®šã®åˆè¨ˆï¼‰
     /// </summary>
     public int TotalNotes => Marvelous + Perfect + Great + Good + Miss;
 
     /// <summary>
-    /// Judgements’lƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·
+    /// Judgementså€¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™
     /// </summary>
-    /// <param name="marvelous">Marvelous”»’è‚Ì‰ñ”</param>
-    /// <param name="perfect">Perfect”»’è‚Ì‰ñ”</param>
-    /// <param name="great">Great”»’è‚Ì‰ñ”</param>
-    /// <param name="good">Good”»’è‚Ì‰ñ”</param>
-    /// <param name="miss">Miss”»’è‚Ì‰ñ”</param>
-    /// <exception cref="ArgumentOutOfRangeException">‚¢‚¸‚ê‚©‚Ì”»’è‰ñ”‚ª•‰‚Ì’l‚Ìê‡</exception>
+    /// <param name="marvelous">Marvelousåˆ¤å®šã®å›æ•°</param>
+    /// <param name="perfect">Perfectåˆ¤å®šã®å›æ•°</param>
+    /// <param name="great">Greatåˆ¤å®šã®å›æ•°</param>
+    /// <param name="good">Goodåˆ¤å®šã®å›æ•°</param>
+    /// <param name="miss">Missåˆ¤å®šã®å›æ•°</param>
+    /// <exception cref="ArgumentOutOfRangeException">ã„ãšã‚Œã‹ã®åˆ¤å®šå›æ•°ãŒè² ã®å€¤ã®å ´åˆ</exception>
     public Judgements(int marvelous, int perfect, int great, int good, int miss)
     {
         if (marvelous < 0 || perfect < 0 || great < 0 || good < 0 || miss < 0)
         {
             throw new ArgumentOutOfRangeException(
-        "All judgement counts must be non-negative.");
+        "All judgment counts must be non-negative.");
         }
 
         Marvelous = marvelous;
@@ -60,7 +60,7 @@ public sealed class Judgements : IEquatable<Judgements>
     }
 
     /// <summary>
-    /// w’è‚³‚ê‚½JudgementsƒIƒuƒWƒFƒNƒg‚Æ“™‚µ‚¢‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ü‚·
+    /// æŒ‡å®šã•ã‚ŒãŸJudgementsã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ç­‰ã—ã„ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¾ã™
     /// </summary>
     public bool Equals(Judgements? other)
     {
@@ -74,18 +74,18 @@ public sealed class Judgements : IEquatable<Judgements>
     }
 
     /// <summary>
-    /// w’è‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Æ“™‚µ‚¢‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ü‚·
+    /// æŒ‡å®šã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ç­‰ã—ã„ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¾ã™
     /// </summary>
     public override bool Equals(object? obj) => Equals(obj as Judgements);
 
     /// <summary>
-    /// ƒnƒbƒVƒ…ƒR[ƒh‚ğæ“¾‚µ‚Ü‚·
+    /// ãƒãƒƒã‚·ãƒ¥ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã—ã¾ã™
     /// </summary>
     public override int GetHashCode() =>
         HashCode.Combine(Marvelous, Perfect, Great, Good, Miss);
 
     /// <summary>
-    /// “™‰¿‰‰Zq
+    /// ç­‰ä¾¡æ¼”ç®—å­
     /// </summary>
     public static bool operator ==(Judgements? left, Judgements? right)
     {
@@ -94,12 +94,12 @@ public sealed class Judgements : IEquatable<Judgements>
     }
 
     /// <summary>
-    /// ”ñ“™‰¿‰‰Zq
+    /// éç­‰ä¾¡æ¼”ç®—å­
     /// </summary>
     public static bool operator !=(Judgements? left, Judgements? right) => !(left == right);
 
     /// <summary>
-    /// ”»’èî•ñ‚ğ•¶š—ñ‚Æ‚µ‚Ä•Ô‚µ‚Ü‚·
+    /// åˆ¤å®šæƒ…å ±ã‚’æ–‡å­—åˆ—ã¨ã—ã¦è¿”ã—ã¾ã™
     /// </summary>
     public override string ToString() =>
         $"Marvelous:{Marvelous} Perfect:{Perfect} Great:{Great} Good:{Good} Miss:{Miss}";
