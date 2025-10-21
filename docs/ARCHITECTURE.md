@@ -113,7 +113,7 @@ graph TD
     * 1回のプレイ結果の詳細をまとめて表現する**値オブジェクト**。以下の属性で構成される。
     * **Points:** 100万点満点の数値。会話やUI上では単に「スコア」と呼ばれることが多い。
     * **EXスコア (EX Score):** 判定ごとの配点に基づくスコア。
-    * **ランク (Rank):** `AAA`, `AA`などの評価ランク。
+    * **ランク (Rank):** `E`, `D`, `C`, `B`, `A`, `AA`, `AAA`の評価ランク。Eはクリア失敗時（ライフが尽きた状態）に記録される。
     * **判定 (Judgements):** Marvelous, Perfect, Greatなどの判定ごとの回数。
     * **最大コンボ数 (Max Combo):** プレイ中に達成した最大のコンボ数。
     * **クリアタイプ (Clear Type):** 達成状況を示す種別。`FAILED`, `CLEARED`, `FULL_COMBO`, `PERFECT_FULL_COMBO`などの値をとる。
@@ -1033,5 +1033,4 @@ erDiagram
     Charts ||--|{ PersonalHighScores : "has one"
     Charts ||--|{ TopScores : "has one"
     Songs ||--|{ Charts : "has many"
-    UserProfiles ||--o{ TopScores : "achieved by"
-```
+    UserProfiles ||--o{ TopScores : "achieved by"```
