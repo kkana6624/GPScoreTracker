@@ -1033,4 +1033,5 @@ erDiagram
     Charts ||--|{ PersonalHighScores : "has one"
     Charts ||--|{ TopScores : "has one"
     Songs ||--|{ Charts : "has many"
-    UserProfiles ||--o{ TopScores : "achieved by"```
+    UserProfiles ||--o{ TopScores : "achieved by"
+```
