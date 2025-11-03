@@ -148,7 +148,7 @@ DDRに収録されている楽曲を表す。
 プレイヤーによる1回ごとのプレイ履歴を表す。
 - `ScoreRecordId` (ID): プレイ履歴の一意な識別子
 - `UserProfileId` (ID): プレイしたユーザーのID
-- `Chart` (Value Object): プレイした譜面
+- `ChartIdentifier` (Value Object): プレイした譜面の識別情報
 - `Score` (Value Object): プレイ結果のスコア詳細
 - `PlayedAt` (DateTime): プレイした日時
 
@@ -156,7 +156,7 @@ DDRに収録されている楽曲を表す。
 ユーザーごと、譜面ごとの自己ベスト記録を表す。
 - `PersonalHighScoreId` (ID): 自己ベスト記録の一意な識別子
 - `UserProfileId` (ID): 記録を保持するユーザーのID
-- `Chart` (Value Object): 対象となる譜面
+- `ChartIdentifier` (Value Object): 対象となる譜面の識別情報
 - `Score` (Value Object): 自己ベストのスコア詳細
 - `AchievedAt` (DateTime): この記録を達成した日時
 
@@ -164,14 +164,15 @@ DDRに収録されている楽曲を表す。
 譜面ごとの、全ユーザー中での最高記録を表す。
 - `TopScoreId` (ID): トップスコア記録の一意な識別子
 - `UserProfileId` (ID): この記録を達成したユーザーのID
-- `Chart` (Value Object): 対象となる譜面
+- `ChartIdentifier` (Value Object): 対象となる譜面の識別情報
 - `Score` (Value Object): トップスコアのスコア詳細
 - `AchievedAt` (DateTime): この記録を達成した日時
 
 ### 3.2. 値オブジェクト (Value Objects)
 値オブジェクトは、その属性によって識別される**不変 (Immutable)**なオブジェクトである。
 
-#### `Chart` (譜面)
+#### `ChartIdentifier` (譜面識別子)
+特定の譜面を一意に識別するための値オブジェクト。エンティティの`Chart`とは異なり、データベースIDを持たない軽量な識別情報。
 - `SongId` (ID): 楽曲のID
 - `Difficulty` (enum): 難易度 (`EXPERT`など)
 - `Level` (Value Object): レベル
@@ -1034,4 +1035,3 @@ erDiagram
     Charts ||--|{ TopScores : "has one"
     Songs ||--|{ Charts : "has many"
     UserProfiles ||--o{ TopScores : "achieved by"
-```

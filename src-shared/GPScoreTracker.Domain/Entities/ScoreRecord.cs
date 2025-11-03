@@ -1,4 +1,3 @@
-using GPScoreTracker.Domain.Entities;
 using GPScoreTracker.Domain.ValueObjects;
 using System.Globalization;
 
@@ -20,9 +19,9 @@ public sealed class ScoreRecord : IEquatable<ScoreRecord>
     public Guid UserProfileId { get; private set; }
 
     /// <summary>
-    /// プレイした譜面
+    /// プレイした譜面の識別情報
     /// </summary>
-    public Chart Chart { get; private set; }
+    public ChartIdentifier ChartIdentifier { get; private set; }
 
     /// <summary>
     /// プレイ結果のスコア詳細
@@ -39,18 +38,18 @@ public sealed class ScoreRecord : IEquatable<ScoreRecord>
     /// </summary>
     /// <param name="scoreRecordId">スコア記録の一意な識別子</param>
     /// <param name="userProfileId">プレイしたユーザーのID</param>
-    /// <param name="chart">プレイした譜面</param>
+    /// <param name="chartIdentifier">プレイした譜面の識別情報</param>
     /// <param name="score">プレイ結果のスコア詳細</param>
     /// <param name="playedAt">プレイした日時</param>
-    /// <exception cref="ArgumentNullException">chartまたはscoreがnullの場合</exception>
-    public ScoreRecord(Guid scoreRecordId, Guid userProfileId, Chart chart, Score score, DateTime playedAt)
+    /// <exception cref="ArgumentNullException">chartIdentifier または score が null の場合</exception>
+    public ScoreRecord(Guid scoreRecordId, Guid userProfileId, ChartIdentifier chartIdentifier, Score score, DateTime playedAt)
     {
-        ArgumentNullException.ThrowIfNull(chart);
+        ArgumentNullException.ThrowIfNull(chartIdentifier);
         ArgumentNullException.ThrowIfNull(score);
 
         ScoreRecordId = scoreRecordId;
         UserProfileId = userProfileId;
-        Chart = chart;
+        ChartIdentifier = chartIdentifier;
         Score = score;
         PlayedAt = playedAt;
     }

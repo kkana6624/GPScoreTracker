@@ -1,4 +1,5 @@
 using GPScoreTracker.Domain.Entities;
+using GPScoreTracker.Domain.Enums;
 using GPScoreTracker.Domain.ValueObjects;
 using Xunit;
 
@@ -9,6 +10,19 @@ namespace GPScoreTracker.Domain.Tests.Entities;
 /// </summary>
 public class ScoreRecordTests
 {
+    #region Test Helpers
+
+    private static ChartIdentifier CreateTestChartIdentifier()
+    {
+        return new ChartIdentifier(
+      Guid.NewGuid(),
+            Difficulty.Expert,
+         new Level(15)
+   );
+    }
+
+    #endregion
+
     #region Constructor Tests
 
     [Fact]
@@ -17,19 +31,18 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
+ var chartId = CreateTestChartIdentifier();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+      new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
         // Act
-        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+     var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
-        // Assert
+  // Assert
         Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
         Assert.Equal(userProfileId, scoreRecord.UserProfileId);
-        Assert.Equal(chart, scoreRecord.Chart);
+  Assert.Equal(chartId, scoreRecord.ChartIdentifier);
         Assert.Equal(score, scoreRecord.Score);
         Assert.Equal(playedAt, scoreRecord.PlayedAt);
     }
@@ -37,32 +50,31 @@ public class ScoreRecordTests
     [Fact]
     public void Constructor_NullChart_ThrowsArgumentNullException()
     {
-        // Arrange
-        var scoreRecordId = Guid.NewGuid();
-        var userProfileId = Guid.NewGuid();
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
-        var playedAt = DateTime.UtcNow;
+   // Arrange
+  var scoreRecordId = Guid.NewGuid();
+     var userProfileId = Guid.NewGuid();
+ var score = new Score(980000, 2850, Rank.AAPlus,
+      new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
+   var playedAt = DateTime.UtcNow;
 
-        // Act & Assert
+  // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(
-            () => new ScoreRecord(scoreRecordId, userProfileId, null!, score, playedAt));
-        Assert.Equal("chart", exception.ParamName);
+  () => new ScoreRecord(scoreRecordId, userProfileId, null!, score, playedAt));
+        Assert.Equal("chartIdentifier", exception.ParamName);
     }
 
     [Fact]
     public void Constructor_NullScore_ThrowsArgumentNullException()
     {
-        // Arrange
-        var scoreRecordId = Guid.NewGuid();
-        var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var playedAt = DateTime.UtcNow;
+      // Arrange
+     var scoreRecordId = Guid.NewGuid();
+  var userProfileId = Guid.NewGuid();
+        var chartId = CreateTestChartIdentifier();
+      var playedAt = DateTime.UtcNow;
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(
-            () => new ScoreRecord(scoreRecordId, userProfileId, chart, null!, playedAt));
+     () => new ScoreRecord(scoreRecordId, userProfileId, chartId, null!, playedAt));
         Assert.Equal("score", exception.ParamName);
     }
 
@@ -73,27 +85,25 @@ public class ScoreRecordTests
     [Fact]
     public void Equals_SameScoreRecordId_ReturnsTrue()
     {
-        // Arrange
-        var scoreRecordId = Guid.NewGuid();
-        var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
-        var playedAt = DateTime.UtcNow;
+     // Arrange
+ var scoreRecordId = Guid.NewGuid();
+  var userProfileId = Guid.NewGuid();
+  var chartId = CreateTestChartIdentifier();
+  var score = new Score(980000, 2850, Rank.AAPlus,
+    new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
+      var playedAt = DateTime.UtcNow;
 
-        var scoreRecord1 = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+        var scoreRecord1 = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
         var scoreRecord2 = new ScoreRecord(scoreRecordId, Guid.NewGuid(),
-            new GPScoreTracker.Domain.Entities.Chart(Guid.NewGuid(), Guid.NewGuid(),
-                GPScoreTracker.Domain.Enums.Difficulty.Basic, new Level(10)),
-            new Score(950000, 2800, GPScoreTracker.Domain.Enums.Rank.AA,
-                new Judgements(400, 50, 40, 5, 5), 480, GPScoreTracker.Domain.Enums.ClearType.Cleared),
+       new ChartIdentifier(Guid.NewGuid(), Difficulty.Basic, new Level(10)),
+        new Score(950000, 2800, Rank.AA,
+    new Judgements(400, 50, 40, 5, 5), 480, ClearType.Cleared),
             DateTime.UtcNow.AddHours(-1)); // àŸÇ»ÇÈÉvÉçÉpÉeÉB
 
         // Act & Assert
         Assert.Equal(scoreRecord1, scoreRecord2);
-        Assert.True(scoreRecord1 == scoreRecord2);
-        Assert.False(scoreRecord1 != scoreRecord2);
+   Assert.True(scoreRecord1 == scoreRecord2);
+  Assert.False(scoreRecord1 != scoreRecord2);
     }
 
     [Fact]
@@ -103,14 +113,13 @@ public class ScoreRecordTests
         var scoreRecordId1 = Guid.NewGuid();
         var scoreRecordId2 = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
+        var chartId = CreateTestChartIdentifier();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
-        var scoreRecord1 = new ScoreRecord(scoreRecordId1, userProfileId, chart, score, playedAt);
-        var scoreRecord2 = new ScoreRecord(scoreRecordId2, userProfileId, chart, score, playedAt);
+        var scoreRecord1 = new ScoreRecord(scoreRecordId1, userProfileId, chartId, score, playedAt);
+        var scoreRecord2 = new ScoreRecord(scoreRecordId2, userProfileId, chartId, score, playedAt);
 
         // Act & Assert
         Assert.NotEqual(scoreRecord1, scoreRecord2);
@@ -124,13 +133,12 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
+        var chartId = CreateTestChartIdentifier();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
-        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
         // Act & Assert
         Assert.False(scoreRecord.Equals(null));
@@ -144,13 +152,12 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
+        var chartId = CreateTestChartIdentifier();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
-        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
         // Act & Assert
 #pragma warning disable CS1718 // à”ê}ìIÇ…ìØÇ∂ïœêîÇî‰är
@@ -169,18 +176,16 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
+        var chartId = CreateTestChartIdentifier();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
-        var scoreRecord1 = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+        var scoreRecord1 = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
         var scoreRecord2 = new ScoreRecord(scoreRecordId, Guid.NewGuid(),
-            new GPScoreTracker.Domain.Entities.Chart(Guid.NewGuid(), Guid.NewGuid(),
-                GPScoreTracker.Domain.Enums.Difficulty.Basic, new Level(10)),
-            new Score(950000, 2800, GPScoreTracker.Domain.Enums.Rank.AA,
-                new Judgements(400, 50, 40, 5, 5), 480, GPScoreTracker.Domain.Enums.ClearType.Cleared),
+            new ChartIdentifier(Guid.NewGuid(), Difficulty.Basic, new Level(10)),
+            new Score(950000, 2800, Rank.AA,
+                new Judgements(400, 50, 40, 5, 5), 480, ClearType.Cleared),
             DateTime.UtcNow.AddHours(-1));
 
         // Act & Assert
@@ -194,14 +199,13 @@ public class ScoreRecordTests
         var scoreRecordId1 = Guid.NewGuid();
         var scoreRecordId2 = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
+        var chartId = CreateTestChartIdentifier();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
-        var scoreRecord1 = new ScoreRecord(scoreRecordId1, userProfileId, chart, score, playedAt);
-        var scoreRecord2 = new ScoreRecord(scoreRecordId2, userProfileId, chart, score, playedAt);
+        var scoreRecord1 = new ScoreRecord(scoreRecordId1, userProfileId, chartId, score, playedAt);
+        var scoreRecord2 = new ScoreRecord(scoreRecordId2, userProfileId, chartId, score, playedAt);
 
         // Act & Assert
         Assert.NotEqual(scoreRecord1.GetHashCode(), scoreRecord2.GetHashCode());
@@ -217,13 +221,12 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.Parse("12345678-1234-1234-1234-123456789abc");
         var userProfileId = Guid.Parse("87654321-4321-4321-4321-cba987654321");
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
+        var chartId = CreateTestChartIdentifier();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = new DateTime(2025, 1, 15, 12, 30, 45, DateTimeKind.Utc);
 
-        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
         // Act
         var result = scoreRecord.ToString();
@@ -241,49 +244,47 @@ public class ScoreRecordTests
     [Fact]
     public void Constructor_TypicalScoreRecord_CreatesInstance()
     {
-        // Arrange - ìTå^ìIÇ»ÉXÉRÉAãLò^
-        var scoreRecordId = Guid.NewGuid();
+// Arrange - ìTå^ìIÇ»ÉXÉRÉAãLò^
+   var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Expert, new Level(15));
-        var score = new Score(980000, 2850, GPScoreTracker.Domain.Enums.Rank.AAPlus,
-            new Judgements(450, 30, 15, 3, 2), 495, GPScoreTracker.Domain.Enums.ClearType.Cleared);
-        var playedAt = DateTime.UtcNow;
+   var chartId = new ChartIdentifier(Guid.NewGuid(), Difficulty.Expert, new Level(15));
+        var score = new Score(980000, 2850, Rank.AAPlus,
+   new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
+    var playedAt = DateTime.UtcNow;
 
-        // Act
-        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+ // Act
+      var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
-        // Assert
+  // Assert
         Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
-        Assert.Equal(userProfileId, scoreRecord.UserProfileId);
-        Assert.Equal(GPScoreTracker.Domain.Enums.Difficulty.Expert, scoreRecord.Chart.Difficulty);
-        Assert.Equal(15, scoreRecord.Chart.Level.Value);
-        Assert.Equal(980000, scoreRecord.Score.Points);
-        Assert.Equal(GPScoreTracker.Domain.Enums.Rank.AAPlus, scoreRecord.Score.Rank);
+     Assert.Equal(userProfileId, scoreRecord.UserProfileId);
+   Assert.Equal(Difficulty.Expert, scoreRecord.ChartIdentifier.Difficulty);
+        Assert.Equal(15, scoreRecord.ChartIdentifier.Level.Value);
+     Assert.Equal(980000, scoreRecord.Score.Points);
+        Assert.Equal(Rank.AAPlus, scoreRecord.Score.Rank);
     }
 
     [Fact]
     public void Constructor_FailedScoreRecord_CreatesInstance()
     {
-        // Arrange - é∏îsÇµÇΩÉXÉRÉAãLò^
+      // Arrange - é∏îsÇµÇΩÉXÉRÉAãLò^
         var scoreRecordId = Guid.NewGuid();
-        var userProfileId = Guid.NewGuid();
-        var chart = new GPScoreTracker.Domain.Entities.Chart(
-            Guid.NewGuid(), Guid.NewGuid(), GPScoreTracker.Domain.Enums.Difficulty.Challenge, new Level(18));
-        var score = new Score(650000, 1200, GPScoreTracker.Domain.Enums.Rank.E,
-            new Judgements(200, 100, 80, 50, 70), 200, GPScoreTracker.Domain.Enums.ClearType.Failed);
-        var playedAt = DateTime.UtcNow.AddHours(-2);
+   var userProfileId = Guid.NewGuid();
+  var chartId = new ChartIdentifier(Guid.NewGuid(), Difficulty.Challenge, new Level(18));
+  var score = new Score(650000, 1200, Rank.E,
+       new Judgements(200, 100, 80, 50, 70), 200, ClearType.Failed);
+ var playedAt = DateTime.UtcNow.AddHours(-2);
 
-        // Act
-        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chart, score, playedAt);
+ // Act
+        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
         // Assert
-        Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
-        Assert.Equal(GPScoreTracker.Domain.Enums.Difficulty.Challenge, scoreRecord.Chart.Difficulty);
-        Assert.Equal(18, scoreRecord.Chart.Level.Value);
-        Assert.Equal(650000, scoreRecord.Score.Points);
-        Assert.Equal(GPScoreTracker.Domain.Enums.Rank.E, scoreRecord.Score.Rank);
-        Assert.Equal(GPScoreTracker.Domain.Enums.ClearType.Failed, scoreRecord.Score.ClearType);
+Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
+        Assert.Equal(Difficulty.Challenge, scoreRecord.ChartIdentifier.Difficulty);
+        Assert.Equal(18, scoreRecord.ChartIdentifier.Level.Value);
+   Assert.Equal(650000, scoreRecord.Score.Points);
+      Assert.Equal(Rank.E, scoreRecord.Score.Rank);
+   Assert.Equal(ClearType.Failed, scoreRecord.Score.ClearType);
     }
 
     #endregion
