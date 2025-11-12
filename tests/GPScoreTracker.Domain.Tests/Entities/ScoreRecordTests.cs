@@ -10,19 +10,6 @@ namespace GPScoreTracker.Domain.Tests.Entities;
 /// </summary>
 public class ScoreRecordTests
 {
-    #region Test Helpers
-
-    private static ChartIdentifier CreateTestChartIdentifier()
-    {
-        return new ChartIdentifier(
-      Guid.NewGuid(),
-            Difficulty.Expert,
-         new Level(15)
-   );
-    }
-
-    #endregion
-
     #region Constructor Tests
 
     [Fact]
@@ -31,50 +18,34 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
- var chartId = CreateTestChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = new Score(980000, 2850, Rank.AAPlus,
-      new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
         // Act
-     var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
+        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
-  // Assert
+        // Assert
         Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
         Assert.Equal(userProfileId, scoreRecord.UserProfileId);
-  Assert.Equal(chartId, scoreRecord.ChartIdentifier);
+        Assert.Equal(chartId, scoreRecord.ChartId);
         Assert.Equal(score, scoreRecord.Score);
         Assert.Equal(playedAt, scoreRecord.PlayedAt);
     }
 
     [Fact]
-    public void Constructor_NullChart_ThrowsArgumentNullException()
-    {
-   // Arrange
-  var scoreRecordId = Guid.NewGuid();
-     var userProfileId = Guid.NewGuid();
- var score = new Score(980000, 2850, Rank.AAPlus,
-      new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
-   var playedAt = DateTime.UtcNow;
-
-  // Act & Assert
-        var exception = Assert.Throws<ArgumentNullException>(
-  () => new ScoreRecord(scoreRecordId, userProfileId, null!, score, playedAt));
-        Assert.Equal("chartIdentifier", exception.ParamName);
-    }
-
-    [Fact]
     public void Constructor_NullScore_ThrowsArgumentNullException()
     {
-      // Arrange
-     var scoreRecordId = Guid.NewGuid();
-  var userProfileId = Guid.NewGuid();
-        var chartId = CreateTestChartIdentifier();
-      var playedAt = DateTime.UtcNow;
+        // Arrange
+        var scoreRecordId = Guid.NewGuid();
+        var userProfileId = Guid.NewGuid();
+        var chartId = Guid.NewGuid();
+        var playedAt = DateTime.UtcNow;
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(
-     () => new ScoreRecord(scoreRecordId, userProfileId, chartId, null!, playedAt));
+            () => new ScoreRecord(scoreRecordId, userProfileId, chartId, null!, playedAt));
         Assert.Equal("score", exception.ParamName);
     }
 
@@ -85,25 +56,25 @@ public class ScoreRecordTests
     [Fact]
     public void Equals_SameScoreRecordId_ReturnsTrue()
     {
-     // Arrange
- var scoreRecordId = Guid.NewGuid();
-  var userProfileId = Guid.NewGuid();
-  var chartId = CreateTestChartIdentifier();
-  var score = new Score(980000, 2850, Rank.AAPlus,
-    new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
-      var playedAt = DateTime.UtcNow;
+        // Arrange
+        var scoreRecordId = Guid.NewGuid();
+        var userProfileId = Guid.NewGuid();
+        var chartId = Guid.NewGuid();
+        var score = new Score(980000, 2850, Rank.AAPlus,
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
+        var playedAt = DateTime.UtcNow;
 
         var scoreRecord1 = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
         var scoreRecord2 = new ScoreRecord(scoreRecordId, Guid.NewGuid(),
-       new ChartIdentifier(Guid.NewGuid(), Difficulty.Basic, new Level(10)),
-        new Score(950000, 2800, Rank.AA,
-    new Judgements(400, 50, 40, 5, 5), 480, ClearType.Cleared),
+            Guid.NewGuid(), // àŸÇ»ÇÈChartId
+            new Score(950000, 2800, Rank.AA,
+                new Judgements(400, 50, 40, 5, 5), 480, ClearType.Cleared),
             DateTime.UtcNow.AddHours(-1)); // àŸÇ»ÇÈÉvÉçÉpÉeÉB
 
         // Act & Assert
         Assert.Equal(scoreRecord1, scoreRecord2);
-   Assert.True(scoreRecord1 == scoreRecord2);
-  Assert.False(scoreRecord1 != scoreRecord2);
+        Assert.True(scoreRecord1 == scoreRecord2);
+        Assert.False(scoreRecord1 != scoreRecord2);
     }
 
     [Fact]
@@ -113,7 +84,7 @@ public class ScoreRecordTests
         var scoreRecordId1 = Guid.NewGuid();
         var scoreRecordId2 = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartId = CreateTestChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = new Score(980000, 2850, Rank.AAPlus,
             new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
@@ -133,7 +104,7 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartId = CreateTestChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = new Score(980000, 2850, Rank.AAPlus,
             new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
@@ -152,7 +123,7 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartId = CreateTestChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = new Score(980000, 2850, Rank.AAPlus,
             new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
@@ -160,7 +131,7 @@ public class ScoreRecordTests
         var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
         // Act & Assert
-#pragma warning disable CS1718 // à”ê}ìIÇ…ìØÇ∂ïœêîÇî‰är
+#pragma warning disable CS1718 // à”ê}ìIÇ…ìØàÍïœêîÇî‰är
         Assert.True(scoreRecord.Equals(scoreRecord));
         Assert.True(scoreRecord == scoreRecord);
 #pragma warning restore CS1718
@@ -176,14 +147,14 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartId = CreateTestChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = new Score(980000, 2850, Rank.AAPlus,
             new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
 
         var scoreRecord1 = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
         var scoreRecord2 = new ScoreRecord(scoreRecordId, Guid.NewGuid(),
-            new ChartIdentifier(Guid.NewGuid(), Difficulty.Basic, new Level(10)),
+            Guid.NewGuid(),
             new Score(950000, 2800, Rank.AA,
                 new Judgements(400, 50, 40, 5, 5), 480, ClearType.Cleared),
             DateTime.UtcNow.AddHours(-1));
@@ -199,7 +170,7 @@ public class ScoreRecordTests
         var scoreRecordId1 = Guid.NewGuid();
         var scoreRecordId2 = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartId = CreateTestChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = new Score(980000, 2850, Rank.AAPlus,
             new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = DateTime.UtcNow;
@@ -221,7 +192,7 @@ public class ScoreRecordTests
         // Arrange
         var scoreRecordId = Guid.Parse("12345678-1234-1234-1234-123456789abc");
         var userProfileId = Guid.Parse("87654321-4321-4321-4321-cba987654321");
-        var chartId = CreateTestChartIdentifier();
+        var chartId = Guid.Parse("11111111-2222-3333-4444-555555555555");
         var score = new Score(980000, 2850, Rank.AAPlus,
             new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
         var playedAt = new DateTime(2025, 1, 15, 12, 30, 45, DateTimeKind.Utc);
@@ -231,9 +202,10 @@ public class ScoreRecordTests
         // Act
         var result = scoreRecord.ToString();
 
-        // Assert - Ç‹Ç∏äÓñ{ìIÇ»ämîF
+        // Assert
         Assert.Contains("ScoreRecordId:12345678-1234-1234-1234-123456789abc", result);
         Assert.Contains("UserProfileId:87654321-4321-4321-4321-cba987654321", result);
+        Assert.Contains("ChartId:11111111-2222-3333-4444-555555555555", result);
         Assert.Contains("PlayedAt:2025/01/15 12:30:45", result);
     }
 
@@ -244,47 +216,45 @@ public class ScoreRecordTests
     [Fact]
     public void Constructor_TypicalScoreRecord_CreatesInstance()
     {
-// Arrange - ìTå^ìIÇ»ÉXÉRÉAãLò^
-   var scoreRecordId = Guid.NewGuid();
+        // Arrange - ìTå^ìIÇ»ÉXÉRÉAãLò^
+        var scoreRecordId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-   var chartId = new ChartIdentifier(Guid.NewGuid(), Difficulty.Expert, new Level(15));
+        var chartId = Guid.NewGuid();
         var score = new Score(980000, 2850, Rank.AAPlus,
-   new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
-    var playedAt = DateTime.UtcNow;
+            new Judgements(450, 30, 15, 3, 2), 495, ClearType.Cleared);
+        var playedAt = DateTime.UtcNow;
 
- // Act
-      var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
+        // Act
+        var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
-  // Assert
+        // Assert
         Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
-     Assert.Equal(userProfileId, scoreRecord.UserProfileId);
-   Assert.Equal(Difficulty.Expert, scoreRecord.ChartIdentifier.Difficulty);
-        Assert.Equal(15, scoreRecord.ChartIdentifier.Level.Value);
-     Assert.Equal(980000, scoreRecord.Score.Points);
+        Assert.Equal(userProfileId, scoreRecord.UserProfileId);
+        Assert.Equal(chartId, scoreRecord.ChartId);
+        Assert.Equal(980000, scoreRecord.Score.Points);
         Assert.Equal(Rank.AAPlus, scoreRecord.Score.Rank);
     }
 
     [Fact]
     public void Constructor_FailedScoreRecord_CreatesInstance()
     {
-      // Arrange - é∏îsÇµÇΩÉXÉRÉAãLò^
+        // Arrange - é∏îsÇµÇΩÉXÉRÉAãLò^
         var scoreRecordId = Guid.NewGuid();
-   var userProfileId = Guid.NewGuid();
-  var chartId = new ChartIdentifier(Guid.NewGuid(), Difficulty.Challenge, new Level(18));
-  var score = new Score(650000, 1200, Rank.E,
-       new Judgements(200, 100, 80, 50, 70), 200, ClearType.Failed);
- var playedAt = DateTime.UtcNow.AddHours(-2);
+        var userProfileId = Guid.NewGuid();
+        var chartId = Guid.NewGuid();
+        var score = new Score(650000, 1200, Rank.E,
+            new Judgements(200, 100, 80, 50, 70), 200, ClearType.Failed);
+        var playedAt = DateTime.UtcNow.AddHours(-2);
 
- // Act
+        // Act
         var scoreRecord = new ScoreRecord(scoreRecordId, userProfileId, chartId, score, playedAt);
 
         // Assert
-Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
-        Assert.Equal(Difficulty.Challenge, scoreRecord.ChartIdentifier.Difficulty);
-        Assert.Equal(18, scoreRecord.ChartIdentifier.Level.Value);
-   Assert.Equal(650000, scoreRecord.Score.Points);
-      Assert.Equal(Rank.E, scoreRecord.Score.Rank);
-   Assert.Equal(ClearType.Failed, scoreRecord.Score.ClearType);
+        Assert.Equal(scoreRecordId, scoreRecord.ScoreRecordId);
+        Assert.Equal(chartId, scoreRecord.ChartId);
+        Assert.Equal(650000, scoreRecord.Score.Points);
+        Assert.Equal(Rank.E, scoreRecord.Score.Rank);
+        Assert.Equal(ClearType.Failed, scoreRecord.Score.ClearType);
     }
 
     #endregion

@@ -19,9 +19,9 @@ public sealed class ScoreRecord : IEquatable<ScoreRecord>
     public Guid UserProfileId { get; private set; }
 
     /// <summary>
-    /// プレイした譜面の識別情報
+    /// プレイした譜面のID（Chartエンティティへの参照）
     /// </summary>
-    public ChartIdentifier ChartIdentifier { get; private set; }
+    public Guid ChartId { get; private set; }
 
     /// <summary>
     /// プレイ結果のスコア詳細
@@ -29,27 +29,26 @@ public sealed class ScoreRecord : IEquatable<ScoreRecord>
     public Score Score { get; private set; }
 
     /// <summary>
-    /// プレイした日時
+    /// プレイ日時
     /// </summary>
     public DateTime PlayedAt { get; private set; }
 
     /// <summary>
-    /// ScoreRecordエンティティを作成します
+    /// ScoreRecord エンティティを作成します
     /// </summary>
     /// <param name="scoreRecordId">スコア記録の一意な識別子</param>
     /// <param name="userProfileId">プレイしたユーザーのID</param>
-    /// <param name="chartIdentifier">プレイした譜面の識別情報</param>
+    /// <param name="chartId">プレイした譜面のID</param>
     /// <param name="score">プレイ結果のスコア詳細</param>
-    /// <param name="playedAt">プレイした日時</param>
-    /// <exception cref="ArgumentNullException">chartIdentifier または score が null の場合</exception>
-    public ScoreRecord(Guid scoreRecordId, Guid userProfileId, ChartIdentifier chartIdentifier, Score score, DateTime playedAt)
+    /// <param name="playedAt">プレイ日時</param>
+    /// <exception cref="ArgumentNullException">score が null の場合</exception>
+    public ScoreRecord(Guid scoreRecordId, Guid userProfileId, Guid chartId, Score score, DateTime playedAt)
     {
-        ArgumentNullException.ThrowIfNull(chartIdentifier);
         ArgumentNullException.ThrowIfNull(score);
 
         ScoreRecordId = scoreRecordId;
         UserProfileId = userProfileId;
-        ChartIdentifier = chartIdentifier;
+        ChartId = chartId;
         Score = score;
         PlayedAt = playedAt;
     }
@@ -89,8 +88,8 @@ public sealed class ScoreRecord : IEquatable<ScoreRecord>
     public static bool operator !=(ScoreRecord? left, ScoreRecord? right) => !(left == right);
 
     /// <summary>
-    /// スコア記録情報を文字列として返します
+    /// スコア記録を文字列として返します
     /// </summary>
     public override string ToString() =>
-        $"ScoreRecordId:{ScoreRecordId} UserProfileId:{UserProfileId} PlayedAt:{PlayedAt.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture)}";
+        $"ScoreRecordId:{ScoreRecordId} UserProfileId:{UserProfileId} ChartId:{ChartId} PlayedAt:{PlayedAt.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture)}";
 }

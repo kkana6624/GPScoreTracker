@@ -4,17 +4,17 @@ using System.Globalization;
 namespace GPScoreTracker.Domain.Entities;
 
 /// <summary>
-/// ユーザーごと、譜面ごとの自己ベスト記録を表すエンティティ
+/// 譜面ごとの、全ユーザー中での最高記録を表すエンティティ
 /// </summary>
-public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
+public sealed class TopScore : IEquatable<TopScore>
 {
     /// <summary>
-    /// 自己ベスト記録の一意な識別子
+    /// トップスコア記録の一意な識別子
     /// </summary>
-    public Guid PersonalHighScoreId { get; private set; }
+    public Guid TopScoreId { get; private set; }
 
     /// <summary>
-    /// 記録を保持するユーザーのID
+    /// この記録を達成したユーザーのID
     /// </summary>
     public Guid UserProfileId { get; private set; }
 
@@ -24,7 +24,7 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     public Guid ChartId { get; private set; }
 
     /// <summary>
-    /// 自己ベストのスコア詳細
+    /// トップスコアのスコア詳細
     /// </summary>
     public Score Score { get; private set; }
 
@@ -34,16 +34,16 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     public DateTime AchievedAt { get; private set; }
 
     /// <summary>
-    /// PersonalHighScore エンティティを作成します
+    /// TopScoreエンティティを作成します
     /// </summary>
-    /// <param name="personalHighScoreId">自己ベスト記録の一意な識別子</param>
-    /// <param name="userProfileId">記録を保持するユーザーのID</param>
+    /// <param name="topScoreId">トップスコア記録の一意な識別子</param>
+    /// <param name="userProfileId">この記録を達成したユーザーのID</param>
     /// <param name="chartId">対象となる譜面のID</param>
-    /// <param name="score">自己ベストのスコア詳細</param>
+    /// <param name="score">トップスコアのスコア詳細</param>
     /// <param name="achievedAt">この記録を達成した日時</param>
     /// <exception cref="ArgumentNullException">score が null の場合</exception>
-    public PersonalHighScore(
-        Guid personalHighScoreId,
+    public TopScore(
+        Guid topScoreId,
         Guid userProfileId,
         Guid chartId,
         Score score,
@@ -51,7 +51,7 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     {
         ArgumentNullException.ThrowIfNull(score);
 
-        PersonalHighScoreId = personalHighScoreId;
+        TopScoreId = topScoreId;
         UserProfileId = userProfileId;
         ChartId = chartId;
         Score = score;
@@ -59,14 +59,15 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     }
 
     /// <summary>
-    /// 新しいスコアで自己ベストの更新を試みます
-    /// Pointsのみで判定します
+    /// 新しいスコアでトップスコアの更新を試みます
+    /// Points（100万点満点のスコア）のみで判定します
     /// </summary>
     /// <param name="newScore">新しいスコア</param>
+    /// <param name="achievedByUserId">新しい記録を達成したユーザーID</param>
     /// <param name="playedAt">プレイ日時</param>
     /// <returns>更新された場合 true、されなかった場合 false（同点の場合は先着優先で更新しない）</returns>
     /// <exception cref="ArgumentNullException">newScore が null の場合</exception>
-    public bool TryUpdateWith(Score newScore, DateTime playedAt)
+    public bool TryUpdateWith(Score newScore, Guid achievedByUserId, DateTime playedAt)
     {
         ArgumentNullException.ThrowIfNull(newScore);
 
@@ -74,6 +75,7 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
         if (newScore.Points > Score.Points)
         {
             Score = newScore;
+            UserProfileId = achievedByUserId; // 達成者が変わる可能性がある
             AchievedAt = playedAt;
             return true;
         }
@@ -82,30 +84,30 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     }
 
     /// <summary>
-    /// 指定されたPersonalHighScoreオブジェクトと等しいかどうかを判定します
-    /// エンティティの一意性は PersonalHighScoreId で判定されます
+    /// 指定されたTopScoreオブジェクトと等しいかどうかを判定します
+    /// エンティティの一意性は TopScoreId で判定されます
     /// </summary>
-    public bool Equals(PersonalHighScore? other)
+    public bool Equals(TopScore? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
-        return PersonalHighScoreId == other.PersonalHighScoreId;
+        return TopScoreId == other.TopScoreId;
     }
 
     /// <summary>
     /// 指定されたオブジェクトと等しいかどうかを判定します
     /// </summary>
-    public override bool Equals(object? obj) => Equals(obj as PersonalHighScore);
+    public override bool Equals(object? obj) => Equals(obj as TopScore);
 
     /// <summary>
     /// ハッシュコードを取得します
     /// </summary>
-    public override int GetHashCode() => PersonalHighScoreId.GetHashCode();
+    public override int GetHashCode() => TopScoreId.GetHashCode();
 
     /// <summary>
     /// 等価演算子
     /// </summary>
-    public static bool operator ==(PersonalHighScore? left, PersonalHighScore? right)
+    public static bool operator ==(TopScore? left, TopScore? right)
     {
         if (left is null) return right is null;
         return left.Equals(right);
@@ -114,12 +116,12 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     /// <summary>
     /// 非等価演算子
     /// </summary>
-    public static bool operator !=(PersonalHighScore? left, PersonalHighScore? right) => !(left == right);
+    public static bool operator !=(TopScore? left, TopScore? right) => !(left == right);
 
     /// <summary>
-    /// 自己ベスト記録を文字列として返します
+    /// トップスコア記録を文字列として返します
     /// </summary>
     public override string ToString() =>
-      $"PersonalHighScoreId:{PersonalHighScoreId} UserProfileId:{UserProfileId} ChartId:{ChartId} " +
+        $"TopScoreId:{TopScoreId} UserProfileId:{UserProfileId} ChartId:{ChartId} " +
         $"Score:{Score.Points} AchievedAt:{AchievedAt.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture)}";
 }

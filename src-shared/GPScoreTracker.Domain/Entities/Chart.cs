@@ -24,18 +24,23 @@ public sealed class Chart : IEquatable<Chart>
     public Difficulty Difficulty { get; private set; }
 
     /// <summary>
-    /// レベル
+    /// レベル値
     /// </summary>
     public Level Level { get; private set; }
 
     /// <summary>
-    /// Chartエンティティを作成します
+    /// 論理削除フラグ（版権の都合で削除された譜面など）
+    /// </summary>
+    public bool IsDeleted { get; private set; }
+
+    /// <summary>
+    /// Chart エンティティを作成します
     /// </summary>
     /// <param name="chartId">譜面の一意な識別子</param>
     /// <param name="songId">楽曲のID</param>
     /// <param name="difficulty">難易度</param>
-    /// <param name="level">レベル</param>
-    /// <exception cref="ArgumentNullException">levelがnullの場合</exception>
+    /// <param name="level">レベル値</param>
+    /// <exception cref="ArgumentNullException">level が null の場合</exception>
     public Chart(Guid chartId, Guid songId, Difficulty difficulty, Level level)
     {
         ArgumentNullException.ThrowIfNull(level);
@@ -44,6 +49,26 @@ public sealed class Chart : IEquatable<Chart>
         SongId = songId;
         Difficulty = difficulty;
         Level = level;
+        IsDeleted = false;
+    }
+
+    /// <summary>
+    /// レベルを更新します（難易度調整時）
+    /// </summary>
+    /// <param name="newLevel">新しいレベル値</param>
+    /// <exception cref="ArgumentNullException">newLevel が null の場合</exception>
+    public void UpdateLevel(Level newLevel)
+    {
+        ArgumentNullException.ThrowIfNull(newLevel);
+        Level = newLevel;
+    }
+
+    /// <summary>
+    /// 譜面を論理削除します（版権の都合で削除される場合など）
+    /// </summary>
+    public void MarkAsDeleted()
+    {
+        IsDeleted = true;
     }
 
     /// <summary>
@@ -84,5 +109,6 @@ public sealed class Chart : IEquatable<Chart>
     /// 譜面情報を文字列として返します
     /// </summary>
     public override string ToString() =>
-        $"ChartId:{ChartId} SongId:{SongId} Difficulty:{Difficulty} Level:{Level}";
+        $"ChartId:{ChartId} SongId:{SongId} Difficulty:{Difficulty} Level:{Level.Value}" +
+        (IsDeleted ? " [Deleted]" : "");
 }
