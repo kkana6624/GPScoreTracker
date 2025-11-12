@@ -962,8 +962,17 @@ OCI Autonomous Database上のテーブル構造を定義する。
 | `TopScoreId` | `RAW(16)` | **PK** | トップスコア記録の一意な識別子 |
 | `UserProfileId` | `RAW(16)` | `FK (UserProfiles)`| この記録を達成したユーザーのID |
 | `ChartId` | `RAW(16)` | `FK (Charts)` | 対象となる譜面への参照（`Chart`エンティティのID） |
-| `Score` (Value Object): トップスコアのスコア詳細
-| `AchievedAt` (DateTime): この記録を達成した日時
+| `Points` | `NUMBER(6)` | `NOT NULL` | 獲得スコア（整数値） |
+| `EXScore` | `NUMBER(6)` | `NOT NULL` | EXスコア（DDR独自の加点方式） |
+| `Rank` | `VARCHAR2(2)` | `NOT NULL` | ランク（AAA, AA+, AA, ...） |
+| `ClearType` | `VARCHAR2(16)` | `NOT NULL` | クリアタイプ（FULLCOMBO, CLEAR, FAILEDなど） |
+| `MaxCombo` | `NUMBER(5)` | `NOT NULL` | 最大コンボ数 |
+| `Marvelous`| `NUMBER(4)` | `NOT NULL` | Marvelous判定の数 |
+| `Perfect` | `NUMBER(4)` | `NOT NULL` | Perfect判定の数 |
+| `Great` | `NUMBER(4)` | `NOT NULL` | Great判定の数 |
+| `Good` | `NUMBER(4)` | `NOT NULL` | Good判定の数 |
+| `Miss` | `NUMBER(4)` | `NOT NULL` | Miss判定の数 |
+| `AchievedAt` | `TIMESTAMP` | `NOT NULL` | この記録を達成した日時 |
 
 ```mermaid
 erDiagram
