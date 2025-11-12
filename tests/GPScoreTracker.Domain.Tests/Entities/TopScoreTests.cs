@@ -12,14 +12,6 @@ public class TopScoreTests
 {
     #region Test Data Helpers
 
-    private static ChartIdentifier CreateValidChartIdentifier()
-    {
-        var songId = Guid.NewGuid();
-        var difficulty = Difficulty.Expert;
-        var level = new Level(15);
-        return new ChartIdentifier(songId, difficulty, level);
-    }
-
     private static Score CreateValidScore(int points = 950000)
     {
         var judgements = new Judgements(
@@ -49,7 +41,7 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
         var achievedAt = DateTime.UtcNow;
 
@@ -57,7 +49,7 @@ public class TopScoreTests
         var topScore = new TopScore(
             topScoreId,
             userProfileId,
-            chartIdentifier,
+            chartId,
             score,
             achievedAt
         );
@@ -65,26 +57,9 @@ public class TopScoreTests
         // Assert
         Assert.Equal(topScoreId, topScore.TopScoreId);
         Assert.Equal(userProfileId, topScore.UserProfileId);
-        Assert.Equal(chartIdentifier, topScore.ChartIdentifier);
+        Assert.Equal(chartId, topScore.ChartId);
         Assert.Equal(score, topScore.Score);
         Assert.Equal(achievedAt, topScore.AchievedAt);
-    }
-
-    [Fact]
-    public void Constructor_WithNullChartIdentifier_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var topScoreId = Guid.NewGuid();
-        var userProfileId = Guid.NewGuid();
-        ChartIdentifier? chartIdentifier = null;
-        var score = CreateValidScore();
-        var achievedAt = DateTime.UtcNow;
-
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentNullException>(() =>
-            new TopScore(topScoreId, userProfileId, chartIdentifier!, score, achievedAt)
-        );
-        Assert.Equal("chartIdentifier", exception.ParamName);
     }
 
     [Fact]
@@ -93,13 +68,13 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         Score? score = null;
         var achievedAt = DateTime.UtcNow;
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(() =>
-            new TopScore(topScoreId, userProfileId, chartIdentifier, score!, achievedAt)
+            new TopScore(topScoreId, userProfileId, chartId, score!, achievedAt)
         );
         Assert.Equal("score", exception.ParamName);
     }
@@ -110,7 +85,7 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.Empty;
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
         var achievedAt = DateTime.UtcNow;
 
@@ -118,7 +93,7 @@ public class TopScoreTests
         var topScore = new TopScore(
             topScoreId,
             userProfileId,
-            chartIdentifier,
+            chartId,
             score,
             achievedAt
         );
@@ -133,7 +108,7 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userProfileId = Guid.Empty;
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
         var achievedAt = DateTime.UtcNow;
 
@@ -141,7 +116,7 @@ public class TopScoreTests
         var topScore = new TopScore(
             topScoreId,
             userProfileId,
-            chartIdentifier,
+            chartId,
             score,
             achievedAt
         );
@@ -160,14 +135,14 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var originalUserId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var originalScore = CreateValidScore(900000);
         var originalAchievedAt = DateTime.UtcNow.AddDays(-1);
 
         var topScore = new TopScore(
             topScoreId,
             originalUserId,
-            chartIdentifier,
+            chartId,
             originalScore,
             originalAchievedAt
         );
@@ -192,14 +167,14 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var originalUserId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var originalScore = CreateValidScore(950000);
         var originalAchievedAt = DateTime.UtcNow.AddDays(-1);
 
         var topScore = new TopScore(
             topScoreId,
             originalUserId,
-            chartIdentifier,
+            chartId,
             originalScore,
             originalAchievedAt
         );
@@ -224,14 +199,14 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var originalUserId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var originalScore = CreateValidScore(950000);
         var originalAchievedAt = DateTime.UtcNow.AddDays(-1);
 
         var topScore = new TopScore(
             topScoreId,
             originalUserId,
-            chartIdentifier,
+            chartId,
             originalScore,
             originalAchievedAt
         );
@@ -256,14 +231,14 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
         var achievedAt = DateTime.UtcNow;
 
         var topScore = new TopScore(
             topScoreId,
             userProfileId,
-            chartIdentifier,
+            chartId,
             score,
             achievedAt
         );
@@ -285,14 +260,14 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var originalScore = CreateValidScore(900000);
         var originalAchievedAt = DateTime.UtcNow.AddDays(-1);
 
         var topScore = new TopScore(
             topScoreId,
             userId,
-            chartIdentifier,
+            chartId,
             originalScore,
             originalAchievedAt
         );
@@ -321,13 +296,13 @@ public class TopScoreTests
         var topScoreId = Guid.NewGuid();
         var userProfileId1 = Guid.NewGuid();
         var userProfileId2 = Guid.NewGuid();
-        var chartIdentifier1 = CreateValidChartIdentifier();
-        var chartIdentifier2 = CreateValidChartIdentifier();
+        var chartId1 = Guid.NewGuid();
+        var chartId2 = Guid.NewGuid();
         var score1 = CreateValidScore(900000);
         var score2 = CreateValidScore(950000);
 
-        var topScore1 = new TopScore(topScoreId, userProfileId1, chartIdentifier1, score1, DateTime.UtcNow);
-        var topScore2 = new TopScore(topScoreId, userProfileId2, chartIdentifier2, score2, DateTime.UtcNow);
+        var topScore1 = new TopScore(topScoreId, userProfileId1, chartId1, score1, DateTime.UtcNow);
+        var topScore2 = new TopScore(topScoreId, userProfileId2, chartId2, score2, DateTime.UtcNow);
 
         // Act & Assert
         Assert.True(topScore1.Equals(topScore2));
@@ -342,11 +317,11 @@ public class TopScoreTests
         var topScoreId1 = Guid.NewGuid();
         var topScoreId2 = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
 
-        var topScore1 = new TopScore(topScoreId1, userProfileId, chartIdentifier, score, DateTime.UtcNow);
-        var topScore2 = new TopScore(topScoreId2, userProfileId, chartIdentifier, score, DateTime.UtcNow);
+        var topScore1 = new TopScore(topScoreId1, userProfileId, chartId, score, DateTime.UtcNow);
+        var topScore2 = new TopScore(topScoreId2, userProfileId, chartId, score, DateTime.UtcNow);
 
         // Act & Assert
         Assert.False(topScore1.Equals(topScore2));
@@ -360,10 +335,10 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
 
-        var topScore = new TopScore(topScoreId, userProfileId, chartIdentifier, score, DateTime.UtcNow);
+        var topScore = new TopScore(topScoreId, userProfileId, chartId, score, DateTime.UtcNow);
 
         // Act & Assert
         Assert.False(topScore.Equals(null));
@@ -377,10 +352,10 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
 
-        var topScore = new TopScore(topScoreId, userProfileId, chartIdentifier, score, DateTime.UtcNow);
+        var topScore = new TopScore(topScoreId, userProfileId, chartId, score, DateTime.UtcNow);
 
         // Act & Assert
         Assert.True(topScore.Equals(topScore));
@@ -394,13 +369,13 @@ public class TopScoreTests
         var topScoreId = Guid.NewGuid();
         var userProfileId1 = Guid.NewGuid();
         var userProfileId2 = Guid.NewGuid();
-        var chartIdentifier1 = CreateValidChartIdentifier();
-        var chartIdentifier2 = CreateValidChartIdentifier();
+        var chartId1 = Guid.NewGuid();
+        var chartId2 = Guid.NewGuid();
         var score1 = CreateValidScore(900000);
         var score2 = CreateValidScore(950000);
 
-        var topScore1 = new TopScore(topScoreId, userProfileId1, chartIdentifier1, score1, DateTime.UtcNow);
-        var topScore2 = new TopScore(topScoreId, userProfileId2, chartIdentifier2, score2, DateTime.UtcNow);
+        var topScore1 = new TopScore(topScoreId, userProfileId1, chartId1, score1, DateTime.UtcNow);
+        var topScore2 = new TopScore(topScoreId, userProfileId2, chartId2, score2, DateTime.UtcNow);
 
         // Act & Assert
         Assert.Equal(topScore1.GetHashCode(), topScore2.GetHashCode());
@@ -413,11 +388,11 @@ public class TopScoreTests
         var topScoreId1 = Guid.NewGuid();
         var topScoreId2 = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore();
 
-        var topScore1 = new TopScore(topScoreId1, userProfileId, chartIdentifier, score, DateTime.UtcNow);
-        var topScore2 = new TopScore(topScoreId2, userProfileId, chartIdentifier, score, DateTime.UtcNow);
+        var topScore1 = new TopScore(topScoreId1, userProfileId, chartId, score, DateTime.UtcNow);
+        var topScore2 = new TopScore(topScoreId2, userProfileId, chartId, score, DateTime.UtcNow);
 
         // Act & Assert
         Assert.NotEqual(topScore1.GetHashCode(), topScore2.GetHashCode());
@@ -433,11 +408,11 @@ public class TopScoreTests
         // Arrange
         var topScoreId = Guid.NewGuid();
         var userProfileId = Guid.NewGuid();
-        var chartIdentifier = CreateValidChartIdentifier();
+        var chartId = Guid.NewGuid();
         var score = CreateValidScore(987654);
         var achievedAt = new DateTime(2025, 1, 15, 10, 30, 45, DateTimeKind.Utc);
 
-        var topScore = new TopScore(topScoreId, userProfileId, chartIdentifier, score, achievedAt);
+        var topScore = new TopScore(topScoreId, userProfileId, chartId, score, achievedAt);
 
         // Act
         var result = topScore.ToString();
@@ -445,6 +420,7 @@ public class TopScoreTests
         // Assert
         Assert.Contains($"TopScoreId:{topScoreId}", result);
         Assert.Contains($"UserProfileId:{userProfileId}", result);
+        Assert.Contains($"ChartId:{chartId}", result);
         Assert.Contains("Score:987654", result);
         Assert.Contains("AchievedAt:2025/01/15 10:30:45", result);
     }

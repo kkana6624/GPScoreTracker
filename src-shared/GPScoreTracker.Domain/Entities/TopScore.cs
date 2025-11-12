@@ -19,9 +19,9 @@ public sealed class TopScore : IEquatable<TopScore>
     public Guid UserProfileId { get; private set; }
 
     /// <summary>
-    /// 対象となる譜面の識別情報（値オブジェクト）
+    /// 対象となる譜面のID（Chartエンティティへの参照）
     /// </summary>
-    public ChartIdentifier ChartIdentifier { get; private set; }
+    public Guid ChartId { get; private set; }
 
     /// <summary>
     /// トップスコアのスコア詳細
@@ -38,23 +38,22 @@ public sealed class TopScore : IEquatable<TopScore>
     /// </summary>
     /// <param name="topScoreId">トップスコア記録の一意な識別子</param>
     /// <param name="userProfileId">この記録を達成したユーザーのID</param>
-    /// <param name="chartIdentifier">対象となる譜面の識別情報（値オブジェクト）</param>
+    /// <param name="chartId">対象となる譜面のID</param>
     /// <param name="score">トップスコアのスコア詳細</param>
     /// <param name="achievedAt">この記録を達成した日時</param>
-    /// <exception cref="ArgumentNullException">chartIdentifier または score が null の場合</exception>
+    /// <exception cref="ArgumentNullException">score が null の場合</exception>
     public TopScore(
         Guid topScoreId,
         Guid userProfileId,
-        ChartIdentifier chartIdentifier,
+        Guid chartId,
         Score score,
         DateTime achievedAt)
     {
-        ArgumentNullException.ThrowIfNull(chartIdentifier);
         ArgumentNullException.ThrowIfNull(score);
 
         TopScoreId = topScoreId;
         UserProfileId = userProfileId;
-        ChartIdentifier = chartIdentifier;
+        ChartId = chartId;
         Score = score;
         AchievedAt = achievedAt;
     }
@@ -123,6 +122,6 @@ public sealed class TopScore : IEquatable<TopScore>
     /// トップスコア記録を文字列として返します
     /// </summary>
     public override string ToString() =>
-        $"TopScoreId:{TopScoreId} UserProfileId:{UserProfileId} " +
+        $"TopScoreId:{TopScoreId} UserProfileId:{UserProfileId} ChartId:{ChartId} " +
         $"Score:{Score.Points} AchievedAt:{AchievedAt.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture)}";
 }

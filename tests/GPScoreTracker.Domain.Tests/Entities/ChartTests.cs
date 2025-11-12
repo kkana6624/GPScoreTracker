@@ -169,6 +169,131 @@ public class ChartTests
 
     #endregion
 
+    #region UpdateLevel Tests
+
+    [Fact]
+    public void UpdateLevel_WithValidLevel_UpdatesLevel()
+    {
+        // Arrange
+        var chartId = Guid.NewGuid();
+        var songId = Guid.NewGuid();
+        var originalLevel = new Level(18);
+        var chart = new GPScoreTracker.Domain.Entities.Chart(chartId, songId, Difficulty.Expert, originalLevel);
+
+        var newLevel = new Level(19);
+
+        // Act
+        chart.UpdateLevel(newLevel);
+
+        // Assert
+        Assert.Equal(19, chart.Level.Value);
+        Assert.Equal(newLevel, chart.Level);
+    }
+
+    [Fact]
+    public void UpdateLevel_WithNullLevel_ThrowsArgumentNullException()
+    {
+        // Arrange
+        var chartId = Guid.NewGuid();
+        var songId = Guid.NewGuid();
+        var level = new Level(18);
+        var chart = new GPScoreTracker.Domain.Entities.Chart(chartId, songId, Difficulty.Expert, level);
+
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentNullException>(() => chart.UpdateLevel(null!));
+        Assert.Equal("newLevel", exception.ParamName);
+    }
+
+    [Fact]
+    public void UpdateLevel_LowerLevel_UpdatesLevel()
+    {
+        // Arrange - ÉåÉxÉãÇ™â∫Ç™ÇÈèÍçáÇ‡Ç†ÇÈ
+        var chartId = Guid.NewGuid();
+        var songId = Guid.NewGuid();
+        var originalLevel = new Level(19);
+        var chart = new GPScoreTracker.Domain.Entities.Chart(chartId, songId, Difficulty.Expert, originalLevel);
+
+        var newLevel = new Level(18);
+
+        // Act
+        chart.UpdateLevel(newLevel);
+
+        // Assert
+        Assert.Equal(18, chart.Level.Value);
+    }
+
+    #endregion
+
+    #region MarkAsDeleted Tests
+
+    [Fact]
+    public void MarkAsDeleted_SetsIsDeletedToTrue()
+    {
+        // Arrange
+        var chartId = Guid.NewGuid();
+        var songId = Guid.NewGuid();
+        var level = new Level(15);
+        var chart = new GPScoreTracker.Domain.Entities.Chart(chartId, songId, Difficulty.Expert, level);
+
+        // Assert - èâä˙èÛë‘
+        Assert.False(chart.IsDeleted);
+
+        // Act
+        chart.MarkAsDeleted();
+
+        // Assert
+        Assert.True(chart.IsDeleted);
+    }
+
+    [Fact]
+    public void MarkAsDeleted_CalledTwice_RemainsDeleted()
+    {
+        // Arrange
+        var chartId = Guid.NewGuid();
+        var songId = Guid.NewGuid();
+        var level = new Level(15);
+        var chart = new GPScoreTracker.Domain.Entities.Chart(chartId, songId, Difficulty.Expert, level);
+
+        // Act
+        chart.MarkAsDeleted();
+        chart.MarkAsDeleted(); // 2âÒñ⁄ÇÃåƒÇ—èoÇµ
+
+        // Assert
+        Assert.True(chart.IsDeleted);
+    }
+
+    [Fact]
+    public void ToString_DeletedChart_ContainsDeletedFlag()
+    {
+        // Arrange
+        var chartId = Guid.NewGuid();
+        var songId = Guid.NewGuid();
+        var level = new Level(15);
+        var chart = new GPScoreTracker.Domain.Entities.Chart(chartId, songId, Difficulty.Expert, level);
+
+        // Act
+        chart.MarkAsDeleted();
+        var result = chart.ToString();
+
+        // Assert
+        Assert.Contains("[Deleted]", result);
+    }
+
+    [Fact]
+    public void Constructor_NewChart_IsNotDeleted()
+    {
+        // Arrange & Act
+        var chartId = Guid.NewGuid();
+        var songId = Guid.NewGuid();
+        var level = new Level(15);
+        var chart = new GPScoreTracker.Domain.Entities.Chart(chartId, songId, Difficulty.Expert, level);
+
+        // Assert
+        Assert.False(chart.IsDeleted);
+    }
+
+    #endregion
+
     #region Realistic Scenario Tests
 
     [Fact]

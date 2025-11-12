@@ -144,11 +144,30 @@ DDRに収録されている楽曲を表す。
 - `Artist` (string): アーティスト名
 - `Status` (SongStatus): 楽曲の状態 (`Active`, `Deleted`)
 
+#### `Chart` (譜面)
+特定の楽曲と難易度の組み合わせを表すエンティティ。譜面のレベル変更や削除に対応するため、データベースIDで管理する。
+
+**設計上の重要な判断:**
+- **レベル変更への対応:** DDRでは譜面のレベルが調整されることがある（例: Lv.18 → Lv.19）。この場合、過去のスコア記録も「同じ譜面」として扱い、自己ベストやトップスコアが継続されるべきである。
+- **譜面削除への対応:** 版権の都合で楽曲が削除される場合でも、過去のスコア記録は保持する必要がある。論理削除（`IsDeleted`フラグ）で対応する。
+- **ChartIdentifierとの使い分け:** `Chart`エンティティはデータベース上のマスタ管理に使用し、`ChartIdentifier`値オブジェクトはUI層やAPI通信での軽量な識別子として併用する。
+
+**プロパティ:**
+- `ChartId` (ID): 譜面の一意な識別子
+- `SongId` (ID): 楽曲への参照
+- `Difficulty` (enum): 難易度
+- `Level` (Value Object): レベル
+- `IsDeleted` (bool): 論理削除フラグ
+
+**メソッド:**
+- `UpdateLevel(Level newLevel)`: レベルを更新する（難易度調整時）
+- `MarkAsDeleted()`: 論理削除する
+
 #### `ScoreRecord` (スコア記録)
 プレイヤーによる1回ごとのプレイ履歴を表す。
 - `ScoreRecordId` (ID): プレイ履歴の一意な識別子
 - `UserProfileId` (ID): プレイしたユーザーのID
-- `ChartIdentifier` (Value Object): プレイした譜面の識別情報
+- `ChartId` (ID): プレイした譜面への参照（`Chart`エンティティのID）
 - `Score` (Value Object): プレイ結果のスコア詳細
 - `PlayedAt` (DateTime): プレイした日時
 
@@ -156,7 +175,7 @@ DDRに収録されている楽曲を表す。
 ユーザーごと、譜面ごとの自己ベスト記録を表す。
 - `PersonalHighScoreId` (ID): 自己ベスト記録の一意な識別子
 - `UserProfileId` (ID): 記録を保持するユーザーのID
-- `ChartIdentifier` (Value Object): 対象となる譜面の識別情報
+- `ChartId` (ID): 対象となる譜面への参照（`Chart`エンティティのID）
 - `Score` (Value Object): 自己ベストのスコア詳細
 - `AchievedAt` (DateTime): この記録を達成した日時
 
@@ -164,7 +183,7 @@ DDRに収録されている楽曲を表す。
 譜面ごとの、全ユーザー中での最高記録を表す。
 - `TopScoreId` (ID): トップスコア記録の一意な識別子
 - `UserProfileId` (ID): この記録を達成したユーザーのID
-- `ChartIdentifier` (Value Object): 対象となる譜面の識別情報
+- `ChartId` (ID): 対象となる譜面への参照（`Chart`エンティティのID）
 - `Score` (Value Object): トップスコアのスコア詳細
 - `AchievedAt` (DateTime): この記録を達成した日時
 
@@ -172,27 +191,28 @@ DDRに収録されている楽曲を表す。
 値オブジェクトは、その属性によって識別される**不変 (Immutable)**なオブジェクトである。
 
 #### `ChartIdentifier` (譜面識別子)
-特定の譜面を一意に識別するための値オブジェクト。エンティティの`Chart`とは異なり、データベースIDを持たない軽量な識別情報。
+特定の譜面を軽量に識別するための値オブジェクト。
+
+**使用目的:**
+- UI層での譜面選択時の一時的な識別子
+- クライアント・サーバー間のAPI通信でのDTO（データ転送オブジェクト）
+- アプリケーション層での譜面検索条件の指定
+
+**設計上の注意:**
+- `Chart`エンティティとは異なり、データベースIDを持たない
+- サーバー側で受け取った`ChartIdentifier`は、`IChartRepository`を使って対応する`Chart`エンティティに変換する
+- ドメイン層のエンティティ（`ScoreRecord`, `PersonalHighScore`, `TopScore`）は`ChartId`（Guid）で`Chart`を参照する
+
+**プロパティ:**
 - `SongId` (ID): 楽曲のID
-- `Difficulty` (enum): 難易度 (`EXPERT`など)
+- `Difficulty` (enum): 難易度 (`Expert`など)
 - `Level` (Value Object): レベル
-
-#### `Level` (レベル)
-- `Value` (int): レベルの値
-- **不変条件:** `Value`は`1`から`19`の範囲内でなければならない。
-
-#### `Score` (スコア)
-- `Points` (int): 100万点満点の数値
-- `EXScore` (int): EXスコア
-- `Rank` (enum): 評価ランク (`AAA`など)
-- `Judgements` (Value Object): 判定ごとの回数
-- `MaxCombo` (int): 最大コンボ数
-- `ClearType` (enum): クリア種別 (`FULL_COMBO`など)
 
 ### 3.3. リポジトリインターフェース
 ドメイン層は、このインターフェースを通じてデータの操作を行う。
 - `IUserProfileRepository`
 - `ISongRepository`
+- `IChartRepository`
 - `IScoreRecordRepository`
 - `IPersonalHighScoreRepository`
 - `ITopScoreRepository`
@@ -879,7 +899,7 @@ OCI Autonomous Database上のテーブル構造を定義する。
 
 | カラム名 | データ型 | 主キー/制約 | 説明 |
 |:---|:---|:---|:---|
-| `SongId` | `RAW(16)` | **PK** | 楽曲の一意なID (GUID) |
+| `SongId` | `RAW(16)` | **PK** | 楽曲の一意な識別子 |
 | `Title` | `NVARCHAR2(255)`| `NOT NULL` | 楽曲のタイトル |
 | `Artist` | `NVARCHAR2(255)`| `NOT NULL` | アーティスト名 |
 | `Status` | `VARCHAR2(20)` | `NOT NULL` | 楽曲の状態 (`Active`, `Deleted`) |
@@ -889,7 +909,7 @@ OCI Autonomous Database上のテーブル構造を定義する。
 
 | カラム名 | データ型 | 主キー/制約 | 説明 |
 |:---|:---|:---|:---|
-| `ChartId` | `RAW(16)` | **PK** | 譜面の一意なID (GUID) |
+| `ChartId` | `RAW(16)` | **PK** | 譜面の一意な識別子 |
 | `SongId` | `RAW(16)` | `FK (Songs)` | 楽曲への外部キー |
 | `Difficulty` | `VARCHAR2(20)` | `NOT NULL` | 難易度 (`EXPERT`など) |
 | `Level` | `NUMBER(2)` | `NOT NULL` | レベル (1-19) |
@@ -899,7 +919,7 @@ OCI Autonomous Database上のテーブル構造を定義する。
 
 | カラム名 | データ型 | 主キー/制約 | 説明 |
 |:---|:---|:---|:---|
-| `ScoreRecordId` | `RAW(16)` | **PK** | スコア記録の一意なID |
+| `ScoreRecordId` | `RAW(16)` | **PK** | スコア記録の一意な識別子 |
 | `UserProfileId` | `RAW(16)` | `FK (UserProfiles)`| 記録したユーザーへの外部キー |
 | `ChartId` | `RAW(16)` | `FK (Charts)` | プレイした譜面への外部キー |
 | `PlayedAt` | `TIMESTAMP` | `NOT NULL` | プレイ日時 |
@@ -919,10 +939,10 @@ OCI Autonomous Database上のテーブル構造を定義する。
 
 | カラム名 | データ型 | 主キー/制約 | 説明 |
 |:---|:---|:---|:---|
-| `PersonalHighScoreId`| `RAW(16)` | **PK** | 自己ベスト記録の一意なID |
+| `PersonalHighScoreId`| `RAW(16)` | **PK** | 自己ベスト記録の一意な識別子 |
 | `UserProfileId` | `RAW(16)` | `FK (UserProfiles)`| ユーザーへの外部キー |
 | `ChartId` | `RAW(16)` | `FK (Charts)` | 譜面への外部キー |
-| `AchievedAt` | `TIMESTAMP` | `NOT NULL` | 達成日時 |
+| `AchievedAt` | `TIMESTAMP` | `NOT NULL` | この記録を達成した日時 |
 | `Points` | `NUMBER(7)` | `NOT NULL` | 100万点満点のスコア |
 | `EXScore` | `NUMBER(7)` | `NOT NULL` | EXスコア |
 | `Rank` | `VARCHAR2(10)` | `NOT NULL` | ランク (`AAA`など) |
@@ -939,20 +959,11 @@ OCI Autonomous Database上のテーブル構造を定義する。
 
 | カラム名 | データ型 | 主キー/制約 | 説明 |
 |:---|:---|:---|:---|
-| `TopScoreId` | `RAW(16)` | **PK** | トップスコア記録の一意なID |
-| `UserProfileId` | `RAW(16)` | `FK (UserProfiles)`| 達成したユーザーへの外部キー |
-| `ChartId` | `RAW(16)` | `FK (Charts)` | 譜面への外部キー |
-| `AchievedAt` | `TIMESTAMP` | `NOT NULL` | 達成日時 |
-| `Points` | `NUMBER(7)` | `NOT NULL` | 100万点満点のスコア |
-| `EXScore` | `NUMBER(7)` | `NOT NULL` | EXスコア |
-| `Rank` | `VARCHAR2(10)` | `NOT NULL` | ランク (`AAA`など) |
-| `ClearType` | `VARCHAR2(20)`| `NOT NULL` | クリアタイプ (`FULL_COMBO`など) |
-| `MaxCombo` | `NUMBER(4)` | `NOT NULL` | 最大コンボ数 |
-| `Marvelous`| `NUMBER(4)` | `NOT NULL` | Marvelous判定の数 |
-| `Perfect` | `NUMBER(4)` | `NOT NULL` | Perfect判定の数 |
-| `Great` | `NUMBER(4)` | `NOT NULL` | Great判定の数 |
-| `Good` | `NUMBER(4)` | `NOT NULL` | Good判定の数 |
-| `Miss` | `NUMBER(4)` | `NOT NULL` | Miss判定の数 |
+| `TopScoreId` | `RAW(16)` | **PK** | トップスコア記録の一意な識別子 |
+| `UserProfileId` | `RAW(16)` | `FK (UserProfiles)`| この記録を達成したユーザーのID |
+| `ChartId` | `RAW(16)` | `FK (Charts)` | 対象となる譜面への参照（`Chart`エンティティのID） |
+| `Score` (Value Object): トップスコアのスコア詳細
+| `AchievedAt` (DateTime): この記録を達成した日時
 
 ```mermaid
 erDiagram

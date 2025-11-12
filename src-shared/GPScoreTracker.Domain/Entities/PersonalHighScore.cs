@@ -19,9 +19,9 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     public Guid UserProfileId { get; private set; }
 
     /// <summary>
-    /// 対象となる譜面の識別情報（値オブジェクト）
+    /// 対象となる譜面のID（Chartエンティティへの参照）
     /// </summary>
-    public ChartIdentifier ChartIdentifier { get; private set; }
+    public Guid ChartId { get; private set; }
 
     /// <summary>
     /// 自己ベストのスコア詳細
@@ -34,38 +34,37 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     public DateTime AchievedAt { get; private set; }
 
     /// <summary>
-    /// PersonalHighScoreエンティティを作成します
+    /// PersonalHighScore エンティティを作成します
     /// </summary>
     /// <param name="personalHighScoreId">自己ベスト記録の一意な識別子</param>
     /// <param name="userProfileId">記録を保持するユーザーのID</param>
-    /// <param name="chartIdentifier">対象となる譜面の識別情報（値オブジェクト）</param>
+    /// <param name="chartId">対象となる譜面のID</param>
     /// <param name="score">自己ベストのスコア詳細</param>
     /// <param name="achievedAt">この記録を達成した日時</param>
-    /// <exception cref="ArgumentNullException">chartIdentifier または score が null の場合</exception>
+    /// <exception cref="ArgumentNullException">score が null の場合</exception>
     public PersonalHighScore(
         Guid personalHighScoreId,
         Guid userProfileId,
-        ChartIdentifier chartIdentifier,
+        Guid chartId,
         Score score,
         DateTime achievedAt)
     {
-        ArgumentNullException.ThrowIfNull(chartIdentifier);
         ArgumentNullException.ThrowIfNull(score);
 
         PersonalHighScoreId = personalHighScoreId;
         UserProfileId = userProfileId;
-        ChartIdentifier = chartIdentifier;
+        ChartId = chartId;
         Score = score;
         AchievedAt = achievedAt;
     }
 
     /// <summary>
     /// 新しいスコアで自己ベストの更新を試みます
-    /// Points（100万点満点のスコア）を基準に判定します
+    /// Pointsのみで判定します
     /// </summary>
     /// <param name="newScore">新しいスコア</param>
     /// <param name="playedAt">プレイ日時</param>
-    /// <returns>更新された場合 true、そうでなければ false（同点の場合は先着優先で更新しない）</returns>
+    /// <returns>更新された場合 true、されなかった場合 false（同点の場合は先着優先で更新しない）</returns>
     /// <exception cref="ArgumentNullException">newScore が null の場合</exception>
     public bool TryUpdateWith(Score newScore, DateTime playedAt)
     {
@@ -84,7 +83,7 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
 
     /// <summary>
     /// 指定されたPersonalHighScoreオブジェクトと等しいかどうかを判定します
-    /// エンティティの同一性は PersonalHighScoreId で判定されます
+    /// エンティティの一意性は PersonalHighScoreId で判定されます
     /// </summary>
     public bool Equals(PersonalHighScore? other)
     {
@@ -121,6 +120,6 @@ public sealed class PersonalHighScore : IEquatable<PersonalHighScore>
     /// 自己ベスト記録を文字列として返します
     /// </summary>
     public override string ToString() =>
-      $"PersonalHighScoreId:{PersonalHighScoreId} UserProfileId:{UserProfileId} " +
+      $"PersonalHighScoreId:{PersonalHighScoreId} UserProfileId:{UserProfileId} ChartId:{ChartId} " +
         $"Score:{Score.Points} AchievedAt:{AchievedAt.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture)}";
 }
