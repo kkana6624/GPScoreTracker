@@ -3,30 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-client", "src-client", "{10000000-0000-0000-0000-000000000001}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-server", "src-server", "{20000000-0000-0000-0000-000000000002}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-shared", "src-shared", "{13AB4870-8038-086C-0CD0-D24D535182C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{30000000-0000-0000-0000-000000000003}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{5957185B-C9A6-4B84-88DD-A3C8EF99CBD8}"
 	ProjectSection(SolutionItems) = preProject
 		docs\ARCHITECTURE.md = docs\ARCHITECTURE.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-shared", "src-shared", "{13AB4870-8038-086C-0CD0-D24D535182C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.WinUi", "src-client\GPScoreTracker.WinUi\GPScoreTracker.WinUi.csproj", "{009B8320-1FF2-418C-B84D-0FC41248EB54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Client.Application", "src-client\GPScoreTracker.Client.Application\GPScoreTracker.Client.Application.csproj", "{81B8CDA5-7523-420C-8D8B-D8BAFBDD8A6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Client.Infrastructure", "src-client\GPScoreTracker.Client.Infrastructure\GPScoreTracker.Client.Infrastructure.csproj", "{91FCF2B7-4815-40B9-BACE-903C78AB6FCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Domain", "src-shared\GPScoreTracker.Domain\GPScoreTracker.Domain.csproj", "{8FD27C47-C9BE-44EB-948D-C605FCDAFA56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.WinUi", "src-client\GPScoreTracker.WinUi\GPScoreTracker.WinUi.csproj", "{009B8320-1FF2-418C-B84D-0FC41248EB54}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Application", "src-client\GPScoreTracker.Client.Application\GPScoreTracker.Application.csproj", "{81B8CDA5-7523-420C-8D8B-D8BAFBDD8A6A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Infrastructure", "src-client\GPScoreTracker.Client.Infrastructure\GPScoreTracker.Infrastructure.csproj", "{91FCF2B7-4815-40B9-BACE-903C78AB6FCB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Server.Functions", "src-server\GPScoreTracker.Server.Functions\GPScoreTracker.Server.Functions.csproj", "{8382A296-ED2D-4153-B735-95B798B84531}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Domain.Tests", "tests\GPScoreTracker.Domain.Tests\GPScoreTracker.Domain.Tests.csproj", "{69694FCE-BF7B-4F73-927E-5703E22DC565}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Application.Tests", "tests\GPScoreTracker.Client.Application.Tests\GPScoreTracker.Application.Tests.csproj", "{7BD136C0-3D57-41AF-B55C-7ED1EA062E7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Client.Application.Tests", "tests\GPScoreTracker.Client.Application.Tests\GPScoreTracker.Client.Application.Tests.csproj", "{7BD136C0-3D57-41AF-B55C-7ED1EA062E7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Infrastructure.Tests", "tests\GPScoreTracker.Client.Infrastructure.Tests\GPScoreTracker.Infrastructure.Tests.csproj", "{630E2EFE-8BB7-43B4-871D-1B58C6B87F08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Client.Infrastructure.Tests", "tests\GPScoreTracker.Client.Infrastructure.Tests\GPScoreTracker.Client.Infrastructure.Tests.csproj", "{630E2EFE-8BB7-43B4-871D-1B58C6B87F08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Server.Functions.Tests", "tests\GPScoreTracker.Server.Functions.Tests\GPScoreTracker.Server.Functions.Tests.csproj", "{93A0C437-818A-4C03-AA94-B5022A7B91F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPScoreTracker.Server.WebApi", "src-server\GPScoreTracker.Server.WebApi\GPScoreTracker.Server.WebApi.csproj", "{90E25012-DAA8-4BFD-857C-CBBED111320F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,22 +108,6 @@ Global
 		{91FCF2B7-4815-40B9-BACE-903C78AB6FCB}.Release|x86.Build.0 = Release|Any CPU
 		{91FCF2B7-4815-40B9-BACE-903C78AB6FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91FCF2B7-4815-40B9-BACE-903C78AB6FCB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|x64.Build.0 = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|x86.Build.0 = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|ARM64.Build.0 = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|x64.ActiveCfg = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|x64.Build.0 = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|x86.ActiveCfg = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|x86.Build.0 = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8382A296-ED2D-4153-B735-95B798B84531}.Release|Any CPU.Build.0 = Release|Any CPU
 		{69694FCE-BF7B-4F73-927E-5703E22DC565}.Debug|ARM64.ActiveCfg = Debug|Any CPU
 		{69694FCE-BF7B-4F73-927E-5703E22DC565}.Debug|ARM64.Build.0 = Debug|Any CPU
 		{69694FCE-BF7B-4F73-927E-5703E22DC565}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -168,36 +156,32 @@ Global
 		{630E2EFE-8BB7-43B4-871D-1B58C6B87F08}.Release|x86.Build.0 = Release|Any CPU
 		{630E2EFE-8BB7-43B4-871D-1B58C6B87F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{630E2EFE-8BB7-43B4-871D-1B58C6B87F08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|x64.Build.0 = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|x86.Build.0 = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|ARM64.Build.0 = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|x64.ActiveCfg = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|x64.Build.0 = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|x86.ActiveCfg = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|x86.Build.0 = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|x64.Build.0 = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|x86.Build.0 = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|ARM64.Build.0 = Release|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|x64.ActiveCfg = Release|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|x64.Build.0 = Release|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|x86.ActiveCfg = Release|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|x86.Build.0 = Release|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90E25012-DAA8-4BFD-857C-CBBED111320F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{009B8320-1FF2-418C-B84D-0FC41248EB54} = {10000000-0000-0000-0000-000000000001}
+		{81B8CDA5-7523-420C-8D8B-D8BAFBDD8A6A} = {10000000-0000-0000-0000-000000000001}
+		{91FCF2B7-4815-40B9-BACE-903C78AB6FCB} = {10000000-0000-0000-0000-000000000001}
 		{8FD27C47-C9BE-44EB-948D-C605FCDAFA56} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{009B8320-1FF2-418C-B84D-0FC41248EB54} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{81B8CDA5-7523-420C-8D8B-D8BAFBDD8A6A} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{91FCF2B7-4815-40B9-BACE-903C78AB6FCB} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{8382A296-ED2D-4153-B735-95B798B84531} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{69694FCE-BF7B-4F73-927E-5703E22DC565} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{7BD136C0-3D57-41AF-B55C-7ED1EA062E7A} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{630E2EFE-8BB7-43B4-871D-1B58C6B87F08} = {13AB4870-8038-086C-0CD0-D24D535182C0}
-		{93A0C437-818A-4C03-AA94-B5022A7B91F4} = {13AB4870-8038-086C-0CD0-D24D535182C0}
+		{69694FCE-BF7B-4F73-927E-5703E22DC565} = {30000000-0000-0000-0000-000000000003}
+		{7BD136C0-3D57-41AF-B55C-7ED1EA062E7A} = {30000000-0000-0000-0000-000000000003}
+		{630E2EFE-8BB7-43B4-871D-1B58C6B87F08} = {30000000-0000-0000-0000-000000000003}
+		{90E25012-DAA8-4BFD-857C-CBBED111320F} = {20000000-0000-0000-0000-000000000002}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F8955A9B-A527-4C59-B872-E7230D925896}
